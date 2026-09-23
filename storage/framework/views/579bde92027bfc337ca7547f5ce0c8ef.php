@@ -108,7 +108,7 @@
 
     <div class="card shadow-lg request-card">
 
-        {{-- HEADER --}}
+        
         <div class="request-header">
 
             <div class="d-flex align-items-center gap-3">
@@ -134,28 +134,30 @@
 
         </div>
 
-        {{-- BODY --}}
+        
         <div class="request-body">
 
-            @if(session('success'))
+            <?php if(session('success')): ?>
 
                 <div class="alert alert-success">
                     <i class="bi bi-check-circle me-2"></i>
-                    {{ session('success') }}
+                    <?php echo e(session('success')); ?>
+
                 </div>
 
-            @endif
+            <?php endif; ?>
 
-            @if(session('error'))
+            <?php if(session('error')): ?>
 
                 <div class="alert alert-danger">
                     <i class="bi bi-exclamation-circle me-2"></i>
-                    {{ session('error') }}
+                    <?php echo e(session('error')); ?>
+
                 </div>
 
-            @endif
+            <?php endif; ?>
 
-            @if($errors->any())
+            <?php if($errors->any()): ?>
 
                 <div class="alert alert-danger">
 
@@ -164,26 +166,26 @@
                     </div>
 
                     <ul class="mb-0">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
 
                 </div>
 
-            @endif
+            <?php endif; ?>
 
             <form
                 id="loanRequestForm"
-                action="{{ route('loan-requests.public.store') }}"
+                action="<?php echo e(route('loan-requests.public.store')); ?>"
                 method="POST"
             >
 
-                @csrf
+                <?php echo csrf_field(); ?>
 
-                {{-- ========================================= --}}
-                {{-- DATA PEMINJAM --}}
-                {{-- ========================================= --}}
+                
+                
+                
 
                 <div class="section-title">
                     <i class="bi bi-person me-2"></i>
@@ -192,7 +194,7 @@
 
                 <div class="row g-3 mb-4">
 
-                    {{-- Nama --}}
+                    
                     <div class="col-md-6">
 
                         <label class="form-label">
@@ -203,21 +205,36 @@
                         <input
                             type="text"
                             name="borrower_name"
-                            class="form-control @error('borrower_name') is-invalid @enderror"
-                            value="{{ old('borrower_name') }}"
+                            class="form-control <?php $__errorArgs = ['borrower_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            value="<?php echo e(old('borrower_name')); ?>"
                             placeholder="Masukkan nama lengkap"
                             required
                         >
 
-                        @error('borrower_name')
+                        <?php $__errorArgs = ['borrower_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <div class="invalid-feedback">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </div>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                     </div>
 
-                    {{-- Jabatan --}}
+                    
                     <div class="col-md-6">
 
                         <label class="form-label">
@@ -228,21 +245,36 @@
                         <input
                             type="text"
                             name="borrower_position"
-                            class="form-control @error('borrower_position') is-invalid @enderror"
-                            value="{{ old('borrower_position') }}"
+                            class="form-control <?php $__errorArgs = ['borrower_position'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            value="<?php echo e(old('borrower_position')); ?>"
                             placeholder="Contoh: IT Support, Staff, Supervisor"
                             required
                         >
 
-                        @error('borrower_position')
+                        <?php $__errorArgs = ['borrower_position'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <div class="invalid-feedback">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </div>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                     </div>
 
-                    {{-- Divisi --}}
+                    
                     <div class="col-md-6">
 
                         <label class="form-label">
@@ -253,21 +285,36 @@
                         <input
                             type="text"
                             name="borrower_department"
-                            class="form-control @error('borrower_department') is-invalid @enderror"
-                            value="{{ old('borrower_department') }}"
+                            class="form-control <?php $__errorArgs = ['borrower_department'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            value="<?php echo e(old('borrower_department')); ?>"
                             placeholder="Contoh: IT"
                             required
                         >
 
-                        @error('borrower_department')
+                        <?php $__errorArgs = ['borrower_department'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <div class="invalid-feedback">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </div>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                     </div>
 
-                    {{-- Nomor HP --}}
+                    
                     <div class="col-md-6">
 
                         <label class="form-label">
@@ -277,41 +324,56 @@
                         <input
                             type="text"
                             name="borrower_phone"
-                            class="form-control @error('borrower_phone') is-invalid @enderror"
-                            value="{{ old('borrower_phone') }}"
+                            class="form-control <?php $__errorArgs = ['borrower_phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            value="<?php echo e(old('borrower_phone')); ?>"
                             placeholder="Contoh: 08123456789"
                         >
 
-                        @error('borrower_phone')
+                        <?php $__errorArgs = ['borrower_phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                             <div class="invalid-feedback">
-                                {{ $message }}
+                                <?php echo e($message); ?>
+
                             </div>
-                        @enderror
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                     </div>
 
                 </div>
 
 
-                {{-- ========================================= --}}
-                {{-- PILIH ASSET --}}
-                {{-- ========================================= --}}
+                
+                
+                
 
                 <div class="section-title">
                     <i class="bi bi-box-seam me-2"></i>
                     Pilih Asset
                 </div>
 
-                @if($assets->isEmpty())
+                <?php if($assets->isEmpty()): ?>
 
                     <div class="alert alert-warning mb-4">
                         <i class="bi bi-exclamation-triangle me-2"></i>
                         Saat ini tidak ada asset yang tersedia untuk dipinjam.
                     </div>
 
-                @else
+                <?php else: ?>
 
-                    {{-- Filter kategori --}}
+                    
                     <div class="mb-3">
 
                         <div class="d-flex flex-wrap gap-2">
@@ -324,35 +386,36 @@
                                 Semua
                             </button>
 
-                            @foreach($assets->groupBy(fn($asset) => $asset->assetCategory->name ?? 'Lainnya') as $category => $categoryAssets)
+                            <?php $__currentLoopData = $assets->groupBy(fn($asset) => $asset->assetCategory->name ?? 'Lainnya'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category => $categoryAssets): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                                 <button
                                     type="button"
                                     class="btn btn-sm btn-outline-primary category-filter"
-                                    data-category="{{ Str::slug($category) }}"
+                                    data-category="<?php echo e(Str::slug($category)); ?>"
                                 >
-                                    {{ $category }}
+                                    <?php echo e($category); ?>
+
                                 </button>
 
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                         </div>
 
                     </div>
 
 
-                    {{-- Asset list --}}
+                    
                     <div class="asset-list mb-4">
 
-                        @foreach($assets as $asset)
+                        <?php $__currentLoopData = $assets; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $asset): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-                            @php
+                            <?php
                                 $categoryName = $asset->assetCategory->name ?? 'Lainnya';
-                            @endphp
+                            ?>
 
                             <label
                                 class="asset-option d-block rounded-3 p-3 mb-2"
-                                data-category="{{ Str::slug($categoryName) }}"
+                                data-category="<?php echo e(Str::slug($categoryName)); ?>"
                             >
 
                                 <div class="d-flex align-items-start gap-3">
@@ -362,9 +425,10 @@
                                         <input
                                             type="radio"
                                             name="asset_id"
-                                            value="{{ $asset->id }}"
+                                            value="<?php echo e($asset->id); ?>"
                                             class="form-check-input asset-radio"
-                                            {{ old('asset_id') == $asset->id ? 'checked' : '' }}
+                                            <?php echo e(old('asset_id') == $asset->id ? 'checked' : ''); ?>
+
                                             required
                                         >
 
@@ -373,31 +437,35 @@
                                     <div class="flex-grow-1">
 
                                         <div class="fw-semibold">
-                                            {{ $asset->name }}
+                                            <?php echo e($asset->name); ?>
+
                                         </div>
 
                                         <div class="small text-muted mt-1">
 
-                                            @if($asset->code)
+                                            <?php if($asset->code): ?>
                                                 <span class="me-3">
                                                     <i class="bi bi-upc-scan me-1"></i>
-                                                    {{ $asset->code }}
-                                                </span>
-                                            @endif
+                                                    <?php echo e($asset->code); ?>
 
-                                            @if($asset->brand)
+                                                </span>
+                                            <?php endif; ?>
+
+                                            <?php if($asset->brand): ?>
                                                 <span class="me-3">
                                                     <i class="bi bi-tag me-1"></i>
-                                                    {{ $asset->brand }}
-                                                </span>
-                                            @endif
+                                                    <?php echo e($asset->brand); ?>
 
-                                            @if($asset->model)
+                                                </span>
+                                            <?php endif; ?>
+
+                                            <?php if($asset->model): ?>
                                                 <span>
                                                     <i class="bi bi-cpu me-1"></i>
-                                                    {{ $asset->model }}
+                                                    <?php echo e($asset->model); ?>
+
                                                 </span>
-                                            @endif
+                                            <?php endif; ?>
 
                                         </div>
 
@@ -415,22 +483,30 @@
 
                             </label>
 
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                     </div>
 
-                    @error('asset_id')
+                    <?php $__errorArgs = ['asset_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                         <div class="text-danger small mb-3">
-                            {{ $message }}
+                            <?php echo e($message); ?>
+
                         </div>
-                    @enderror
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
-                @endif
+                <?php endif; ?>
 
 
-                {{-- ========================================= --}}
-                {{-- KEPERLUAN --}}
-                {{-- ========================================= --}}
+                
+                
+                
 
                 <div class="section-title">
                     <i class="bi bi-clipboard-text me-2"></i>
@@ -447,21 +523,36 @@
                     <textarea
                         name="purpose"
                         rows="3"
-                        class="form-control @error('purpose') is-invalid @enderror"
+                        class="form-control <?php $__errorArgs = ['purpose'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                         placeholder="Jelaskan tujuan penggunaan asset..."
                         required
-                    >{{ old('purpose') }}</textarea>
+                    ><?php echo e(old('purpose')); ?></textarea>
 
-                    @error('purpose')
+                    <?php $__errorArgs = ['purpose'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                         <div class="invalid-feedback">
-                            {{ $message }}
+                            <?php echo e($message); ?>
+
                         </div>
-                    @enderror
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                 </div>
 
 
-                {{-- CATATAN --}}
+                
 
                 <div class="mb-4">
 
@@ -472,22 +563,37 @@
                     <textarea
                         name="notes"
                         rows="3"
-                        class="form-control @error('notes') is-invalid @enderror"
+                        class="form-control <?php $__errorArgs = ['notes'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                         placeholder="Catatan tambahan jika diperlukan..."
-                    >{{ old('notes') }}</textarea>
+                    ><?php echo e(old('notes')); ?></textarea>
 
-                    @error('notes')
+                    <?php $__errorArgs = ['notes'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                         <div class="invalid-feedback">
-                            {{ $message }}
+                            <?php echo e($message); ?>
+
                         </div>
-                    @enderror
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                 </div>
 
 
-                {{-- ========================================= --}}
-                {{-- TANDA TANGAN --}}
-                {{-- ========================================= --}}
+                
+                
+                
 
                 <div class="section-title">
                     <i class="bi bi-pen me-2"></i>
@@ -526,18 +632,26 @@
 
                     </div>
 
-                    @error('borrower_signature')
+                    <?php $__errorArgs = ['borrower_signature'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                         <div class="text-danger small mt-2">
-                            {{ $message }}
+                            <?php echo e($message); ?>
+
                         </div>
-                    @enderror
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                 </div>
 
 
-                {{-- ========================================= --}}
-                {{-- SUBMIT --}}
-                {{-- ========================================= --}}
+                
+                
+                
 
                 <div class="d-grid">
 
@@ -545,7 +659,8 @@
                         type="submit"
                         class="btn btn-primary btn-lg"
                         id="submitButton"
-                        {{ $assets->isEmpty() ? 'disabled' : '' }}
+                        <?php echo e($assets->isEmpty() ? 'disabled' : ''); ?>
+
                     >
 
                         <i class="bi bi-send me-2"></i>
@@ -564,7 +679,7 @@
 </div>
 
 
-{{-- Signature Pad --}}
+
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@5.0.4/dist/signature_pad.umd.min.js"></script>
 
 <script>
@@ -793,4 +908,4 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 </body>
-</html>
+</html><?php /**PATH /www/wwwroot/asset.adb.web.id/resources/views/loan-requests/form.blade.php ENDPATH**/ ?>

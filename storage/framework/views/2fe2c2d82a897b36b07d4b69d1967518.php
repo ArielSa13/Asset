@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
 
     <title>
-        Berita Acara Serah Terima - {{ $loan->asset->name }}
+        Berita Acara Serah Terima - <?php echo e($loan->asset->name); ?>
+
     </title>
 
     <style>
@@ -213,35 +214,34 @@
 
 <div class="document">
 
-    {{-- =========================================================
-         JUDUL
-    ========================================================== --}}
+    
 
     <div class="title">
         BERITA ACARA SERAH TERIMA PERALATAN KERJA
     </div>
 
     <div class="document-number">
-        {{ $loan->document_number }}
+        <?php echo e($loan->document_number); ?>
+
     </div>
 
 
-    {{-- =========================================================
-         PEMBUKA
-    ========================================================== --}}
+    
 
     <div class="paragraph">
 
         Pada Hari
 
         <strong>
-            {{ $loan->borrowed_at->translatedFormat('l') }}
+            <?php echo e($loan->borrowed_at->translatedFormat('l')); ?>
+
         </strong>
 
         tanggal
 
         <strong>
-            {{ $loan->borrowed_at->translatedFormat('d F Y') }}
+            <?php echo e($loan->borrowed_at->translatedFormat('d F Y')); ?>
+
         </strong>
 
         telah dilakukan serah terima peralatan kerja kepada karyawan
@@ -251,13 +251,11 @@
     </div>
 
 
-    {{-- =========================================================
-         IDENTITAS PEMINJAM
-    ========================================================== --}}
+    
 
     <div class="identity">
 
-        {{-- Nama --}}
+        
         <div class="identity-row">
 
             <div class="identity-label">
@@ -269,13 +267,14 @@
             </div>
 
             <div class="identity-value">
-                {{ $loan->borrower_name }}
+                <?php echo e($loan->borrower_name); ?>
+
             </div>
 
         </div>
 
 
-        {{-- Jabatan --}}
+        
         <div class="identity-row">
 
             <div class="identity-label">
@@ -287,13 +286,14 @@
             </div>
 
             <div class="identity-value">
-                {{ $loan->borrower_position ?: '-' }}
+                <?php echo e($loan->borrower_position ?: '-'); ?>
+
             </div>
 
         </div>
 
 
-        {{-- Divisi --}}
+        
         <div class="identity-row">
 
             <div class="identity-label">
@@ -305,7 +305,8 @@
             </div>
 
             <div class="identity-value">
-                {{ $loan->borrower_department ?: '-' }}
+                <?php echo e($loan->borrower_department ?: '-'); ?>
+
             </div>
 
         </div>
@@ -313,9 +314,7 @@
     </div>
 
 
-    {{-- =========================================================
-         ALAT KERJA
-    ========================================================== --}}
+    
 
     <div class="equipment-title">
         Alat kerja berupa:
@@ -323,7 +322,7 @@
 
     <div class="equipment">
 
-        {{-- Nama Barang --}}
+        
         <div class="equipment-row">
 
             <div class="equipment-label">
@@ -336,25 +335,28 @@
 
             <div class="equipment-value">
 
-                {{ $loan->asset->name }}
+                <?php echo e($loan->asset->name); ?>
 
-                @if($loan->asset->brand || $loan->asset->model)
+
+                <?php if($loan->asset->brand || $loan->asset->model): ?>
 
                     -
-                    {{ $loan->asset->brand }}
+                    <?php echo e($loan->asset->brand); ?>
 
-                    @if($loan->asset->model)
-                        {{ $loan->asset->model }}
-                    @endif
 
-                @endif
+                    <?php if($loan->asset->model): ?>
+                        <?php echo e($loan->asset->model); ?>
+
+                    <?php endif; ?>
+
+                <?php endif; ?>
 
             </div>
 
         </div>
 
 
-        {{-- Serial Number --}}
+        
         <div class="equipment-row">
 
             <div class="equipment-label">
@@ -366,13 +368,14 @@
             </div>
 
             <div class="equipment-value">
-                {{ $loan->asset->serial_number ?: '-' }}
+                <?php echo e($loan->asset->serial_number ?: '-'); ?>
+
             </div>
 
         </div>
 
 
-        {{-- Spesifikasi --}}
+        
         <div class="equipment-row">
 
             <div class="equipment-label">
@@ -384,13 +387,14 @@
             </div>
 
             <div class="equipment-value">
-                {{ $loan->asset->description ?: '-' }}
+                <?php echo e($loan->asset->description ?: '-'); ?>
+
             </div>
 
         </div>
 
 
-        {{-- Kelengkapan --}}
+        
         <div class="equipment-row">
 
             <div class="equipment-label">
@@ -410,9 +414,7 @@
     </div>
 
 
-    {{-- =========================================================
-         KETENTUAN
-    ========================================================== --}}
+    
 
     <div class="terms-title">
         Dengan ketentuan sebagai berikut:
@@ -443,9 +445,7 @@
     </ol>
 
 
-    {{-- =========================================================
-         PENUTUP
-    ========================================================== --}}
+    
 
     <div class="closing">
 
@@ -455,29 +455,24 @@
     </div>
 
 
-    {{-- =========================================================
-         TANGGAL
-    ========================================================== --}}
+    
 
     <div class="signature-date">
 
-        {{ $loan->borrowed_at->translatedFormat('l') }},
-        {{ $loan->borrowed_at->translatedFormat('d F Y') }}
+        <?php echo e($loan->borrowed_at->translatedFormat('l')); ?>,
+        <?php echo e($loan->borrowed_at->translatedFormat('d F Y')); ?>
+
 
     </div>
 
 
-    {{-- =========================================================
-         TANDA TANGAN
-    ========================================================== --}}
+    
 
     <table class="signature-table">
 
         <tr>
 
-            {{-- =================================================
-                 PEMBERI
-            ================================================== --}}
+            
 
             <td>
 
@@ -486,7 +481,7 @@
                 </strong>
 
                 <div class="signature-space">
-                    {{-- Area kosong tanda tangan pemberi --}}
+                    
                 </div>
 
                 <div class="signature-name">
@@ -500,9 +495,7 @@
             </td>
 
 
-            {{-- =================================================
-                 PENERIMA
-            ================================================== --}}
+            
 
             <td>
 
@@ -512,24 +505,26 @@
 
                 <div class="signature-space">
 
-                    @if(!empty($signaturePath) && is_file($signaturePath))
+                    <?php if(!empty($signaturePath) && is_file($signaturePath)): ?>
 
                         <img
-                            src="{{ $signaturePath }}"
+                            src="<?php echo e($signaturePath); ?>"
                             alt="Tanda Tangan Peminjam"
                             class="signature-image"
                         >
 
-                    @endif
+                    <?php endif; ?>
 
                 </div>
 
                 <div class="signature-name">
-                    {{ $loan->borrower_name }}
+                    <?php echo e($loan->borrower_name); ?>
+
                 </div>
 
                 <div class="signature-position">
-                    {{ $loan->borrower_position ?: 'Karyawan' }}
+                    <?php echo e($loan->borrower_position ?: 'Karyawan'); ?>
+
                 </div>
 
             </td>
@@ -541,4 +536,4 @@
 </div>
 
 </body>
-</html>
+</html><?php /**PATH /www/wwwroot/asset.adb.web.id/resources/views/loans/pdf.blade.php ENDPATH**/ ?>

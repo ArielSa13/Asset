@@ -6,6 +6,10 @@ use App\Models\Asset;
 use App\Models\Loan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use App\Models\LoanDocumentSequence;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
 
 class LoanController extends Controller
 {
@@ -42,29 +46,110 @@ class LoanController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'asset_id'            => 'required|exists:assets,id',
-            'borrower_name'       => 'required|string|max:255',
-            'borrower_department' => 'required|string|max:255',
-            'borrower_phone'      => 'nullable|string|max:20',
-            'borrowed_at'         => 'required|date',
-            'expected_return_at'  => 'nullable|date|after:borrowed_at',
-            'condition_before'    => 'required|in:good,fair,poor,broken',
-            'purpose'             => 'required|string|max:500',
-            'notes'               => 'nullable|string',
-        ]);
+{
+    $validated = $request->validate([
+        'asset_id'            => 'required|exists:assets,id',
+        'borrower_name'       => 'required|string|max:255',
+        'borrower_position'   => 'required|string|max:255',
+        'borrower_department' => 'required|string|max:255',
+        'borrower_phone'      => 'nullable|string|max:20',
+        'borrowed_at'         => 'required|date',
+        'expected_return_at'  => 'nullable|date|after:borrowed_at',
+        'condition_before'    => 'required|in:good,fair,poor,broken',
+        'purpose'             => 'required|string|max:500',
+        'notes'               => 'nullable|string',
+    ]);
 
-        $loan = Loan::create($validated);
+    $loan = DB::transaction(function () use ($validated) {
+
+        /*
+         * Tanggal surat mengikuti tanggal peminjaman.
+         */
+        $borrowedAt = \Carbon\Carbon::parse($validated['borrowed_at'])
+            ->setTimezone('Asia/Jakarta');
+
+        $year = $borrowedAt->year;
+        $month = $borrowedAt->month;
+
+        /*
+         * Ambil counter bulan tersebut.
+         * Kalau belum ada, buat.
+         */
+        $sequence = LoanDocumentSequence::where('year', $year)
+            ->where('month', $month)
+            ->lockForUpdate()
+            ->first();
+
+        if (! $sequence) {
+            $sequence = LoanDocumentSequence::create([
+                'year'        => $year,
+                'month'       => $month,
+                'last_number' => 0,
+            ]);
+
+            /*
+             * Ambil kembali dengan lock untuk memastikan
+             * transaksi berikutnya tidak menggunakan nomor sama.
+             */
+            $sequence = LoanDocumentSequence::where('id', $sequence->id)
+                ->lockForUpdate()
+                ->first();
+        }
+
+        $sequence->increment('last_number');
+
+        $number = $sequence->last_number;
+
+        /*
+         * Bulan dalam angka Romawi.
+         */
+        $romanMonths = [
+            1  => 'I',
+            2  => 'II',
+            3  => 'III',
+            4  => 'IV',
+            5  => 'V',
+            6  => 'VI',
+            7  => 'VII',
+            8  => 'VIII',
+            9  => 'IX',
+            10 => 'X',
+            11 => 'XI',
+            12 => 'XII',
+        ];
+
+        $documentNumber = sprintf(
+            'NO. %03d/VMB-HCGS/INT/%s/%d',
+            $number,
+            $romanMonths[$month],
+            $year
+        );
+
+        /*
+         * Simpan loan + nomor dokumen.
+         */
+        $loan = Loan::create(array_merge(
+            $validated,
+            [
+                'document_number' => $documentNumber,
+            ]
+        ));
+
+        /*
+         * Update status asset.
+         */
         $loan->asset->update([
             'status'            => Asset::STATUS_IN_USE,
             'original_location' => $loan->asset->location,
             'location'          => 'Dipinjam oleh: ' . $loan->borrower_name,
         ]);
 
-        return redirect()->route('loans.index')
-            ->with('success', 'Peminjaman berhasil dibuat.');
-    }
+        return $loan;
+    });
+
+    return redirect()->route('loans.index')
+        ->with('success', 'Peminjaman berhasil dibuat. Nomor berita acara: ' . $loan->document_number);
+}
 
     public function show(Loan $loan)
     {
@@ -85,6 +170,7 @@ class LoanController extends Controller
     {
         $validated = $request->validate([
             'borrower_name'       => 'required|string|max:255',
+            'borrower_position'   => 'required|string|max:255',
             'borrower_department' => 'required|string|max:255',
             'borrower_phone'      => 'nullable|string|max:20',
             'expected_return_at'  => 'nullable|date',
@@ -139,12 +225,43 @@ class LoanController extends Controller
      * Export handover document satu peminjaman ke PDF
      */
     public function exportPdf(Loan $loan)
-    {
-        $loan->load('asset');
-        $now = now()->setTimezone('Asia/Jakarta');
-        $pdf = Pdf::loadView('loans.pdf', compact('loan', 'now'));
-        return $pdf->download("handover-{$loan->id}.pdf");
+{
+    $loan->load('asset');
+
+    $now = now()->setTimezone('Asia/Jakarta');
+
+    $signaturePath = null;
+
+    if ($loan->borrower_signature) {
+
+        $path = Storage::disk('public')->path(
+            $loan->borrower_signature
+        );
+
+        if (is_file($path)) {
+            $signaturePath = $path;
+        }
     }
+
+    $pdf = Pdf::loadView(
+        'loans.pdf',
+        compact(
+            'loan',
+            'now',
+            'signaturePath'
+        )
+    );
+
+    $filename = 'BAST-' .
+        str_replace(
+            ['NO. ', '/'],
+            ['', '-'],
+            $loan->document_number
+        ) .
+        '.pdf';
+
+    return $pdf->download($filename);
+}
 
     /**
      * Export seluruh rekap peminjaman ke PDF
