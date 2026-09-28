@@ -231,7 +231,7 @@
                                 </a>
                             </td>
                             <td>{{ $loan->borrower_name }}</td>
-                            <td class="text-muted">{{ $loan->department ?? '—' }}</td>
+                            <td class="text-muted">{{ $loan->borrower_department ?? '—' }}</td>
                             <td class="text-muted">{{ $loan->borrowed_at?->format('d M Y') }}</td>
                         </tr>
                         @empty

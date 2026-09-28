@@ -235,7 +235,7 @@
                                 </a>
                             </td>
                             <td><?php echo e($loan->borrower_name); ?></td>
-                            <td class="text-muted"><?php echo e($loan->department ?? '—'); ?></td>
+                            <td class="text-muted"><?php echo e($loan->borrower_department ?? '—'); ?></td>
                             <td class="text-muted"><?php echo e($loan->borrowed_at?->format('d M Y')); ?></td>
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
