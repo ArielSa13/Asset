@@ -42,7 +42,7 @@ class AssetImportController extends Controller
 
         $categories = AssetCategory::active()
             ->get()
-            ->mapWithKeys(fn ($c) => [
+            ->mapWithKeys(fn($c) => [
                 strtolower(trim($c->name)) => $c->id
             ])
             ->toArray();
@@ -259,8 +259,8 @@ class AssetImportController extends Controller
             if (
                 $code &&
                 Asset::withTrashed()
-                    ->where('code', $code)
-                    ->exists()
+                ->where('code', $code)
+                ->exists()
             ) {
 
                 $errors[] =
@@ -313,7 +313,7 @@ class AssetImportController extends Controller
         $validCount = count(
             array_filter(
                 $results,
-                fn ($r) => $r['valid']
+                fn($r) => $r['valid']
             )
         );
 
@@ -364,7 +364,7 @@ class AssetImportController extends Controller
         $validRows =
             array_filter(
                 $results,
-                fn ($r) => $r['valid']
+                fn($r) => $r['valid']
             );
 
 
@@ -391,46 +391,46 @@ class AssetImportController extends Controller
                 Asset::create([
 
                     'name' =>
-                        $row['name'],
+                    $row['name'],
 
                     'code' =>
-                        $row['code'],
+                    $row['code'],
 
                     'category_id' =>
-                        $row['category_id'],
+                    $row['category_id'],
 
                     'category' =>
-                        $row['category_name'],
+                    $row['category_name'],
 
                     'brand' =>
-                        $row['brand']
+                    $row['brand']
                         ?: null,
 
                     'model' =>
-                        $row['model']
+                    $row['model']
                         ?: null,
 
                     'serial_number' =>
-                        $row['serial_number']
+                    $row['serial_number']
                         ?: null,
 
                     'condition' =>
-                        $row['condition'],
+                    $row['condition'],
 
                     'status' =>
-                        $row['status'],
+                    $row['status'],
 
                     'location' =>
-                        $row['location']
+                    $row['location']
                         ?: null,
 
                     'original_location' =>
-                        $row['location']
+                    $row['location']
                         ?: null,
 
                     // ⭐ DESKRIPSI / SPESIFIKASI
                     'description' =>
-                        $row['description']
+                    $row['description']
                         ?: null,
                 ]);
 
@@ -439,7 +439,6 @@ class AssetImportController extends Controller
 
 
             DB::commit();
-
         } catch (\Exception $e) {
 
             DB::rollBack();
@@ -449,7 +448,7 @@ class AssetImportController extends Controller
                 ->with(
                     'error',
                     'Gagal import: ' .
-                    $e->getMessage()
+                        $e->getMessage()
                 );
         }
 
@@ -523,7 +522,6 @@ class AssetImportController extends Controller
 
 
             fclose($handle);
-
         } else {
 
             // =====================================================

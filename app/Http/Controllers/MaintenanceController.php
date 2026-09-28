@@ -16,8 +16,8 @@ class MaintenanceController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('vendor_name', 'like', "%{$request->search}%")
-                  ->orWhere('description', 'like', "%{$request->search}%")
-                  ->orWhereHas('asset', fn($q) => $q->where('name', 'like', "%{$request->search}%"));
+                    ->orWhere('description', 'like', "%{$request->search}%")
+                    ->orWhereHas('asset', fn($q) => $q->where('name', 'like', "%{$request->search}%"));
             });
         }
 
@@ -46,7 +46,7 @@ class MaintenanceController extends Controller
         return view('maintenance.create', [
             'assets'  => $assets,
             'types'   => Maintenance::types(),
-            'statuses'=> Maintenance::statuses(),
+            'statuses' => Maintenance::statuses(),
         ]);
     }
 

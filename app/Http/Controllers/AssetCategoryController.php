@@ -27,7 +27,9 @@ class AssetCategoryController extends Controller
         $validated = $request->validate([
             'name'        => 'required|string|max:100|unique:asset_categories,name',
             'prefix'      => [
-                'required', 'string', 'max:10',
+                'required',
+                'string',
+                'max:10',
                 'regex:/^[A-Za-z]+$/',
                 Rule::unique('asset_categories', 'prefix'),
             ],
@@ -56,7 +58,9 @@ class AssetCategoryController extends Controller
         $validated = $request->validate([
             'name'        => ['required', 'string', 'max:100', Rule::unique('asset_categories', 'name')->ignore($category->id)],
             'prefix'      => [
-                'required', 'string', 'max:10',
+                'required',
+                'string',
+                'max:10',
                 'regex:/^[A-Za-z]+$/',
                 Rule::unique('asset_categories', 'prefix')->ignore($category->id),
             ],

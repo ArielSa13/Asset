@@ -19,8 +19,8 @@ class AssetController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', "%{$request->search}%")
-                  ->orWhere('code', 'like', "%{$request->search}%")
-                  ->orWhere('serial_number', 'like', "%{$request->search}%");
+                    ->orWhere('code', 'like', "%{$request->search}%")
+                    ->orWhere('serial_number', 'like', "%{$request->search}%");
             });
         }
 
@@ -41,8 +41,8 @@ class AssetController extends Controller
             $assets = $query->orderBy('code', 'asc')->get();
         } else {
             $assets = $query->orderBy('code', 'asc')
-                            ->paginate($perPage)
-                            ->withQueryString();
+                ->paginate($perPage)
+                ->withQueryString();
         }
 
         return view('assets.index', [
@@ -73,7 +73,9 @@ class AssetController extends Controller
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
             'code'           => [
-                'required', 'string', 'max:100',
+                'required',
+                'string',
+                'max:100',
                 Rule::unique('assets', 'code')->whereNull('deleted_at'),
             ],
             'category_id'    => 'required|exists:asset_categories,id',
@@ -132,7 +134,9 @@ class AssetController extends Controller
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
             'code'           => [
-                'required', 'string', 'max:100',
+                'required',
+                'string',
+                'max:100',
                 Rule::unique('assets', 'code')->ignore($asset->id)->whereNull('deleted_at'),
             ],
             'category_id'    => 'required|exists:asset_categories,id',
@@ -200,7 +204,7 @@ class AssetController extends Controller
         $now    = now();
 
         $pdf = Pdf::loadView('assets.pdf', compact('assets', 'now'))
-                  ->setPaper('a4', 'landscape');
+            ->setPaper('a4', 'landscape');
 
         return $pdf->download('asset-list-' . $now->format('Ymd') . '.pdf');
     }

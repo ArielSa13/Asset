@@ -41,19 +41,19 @@ class LoanRequestController extends Controller
             'notes'               => 'nullable|string|max:1000',
         ], [
             'asset_id.required' =>
-                'Pilih asset yang ingin dipinjam.',
+            'Pilih asset yang ingin dipinjam.',
 
             'borrower_name.required' =>
-                'Nama peminjam wajib diisi.',
+            'Nama peminjam wajib diisi.',
 
             'borrower_position.required' =>
-                'Jabatan peminjam wajib diisi.',
+            'Jabatan peminjam wajib diisi.',
 
             'borrower_signature.required' =>
-                'Tanda tangan wajib diisi.',
+            'Tanda tangan wajib diisi.',
 
             'purpose.required' =>
-                'Keperluan peminjaman wajib diisi.',
+            'Keperluan peminjaman wajib diisi.',
         ]);
 
         /*
@@ -79,9 +79,9 @@ class LoanRequestController extends Controller
         */
 
         $existingRequest = LoanRequest::where(
-                'asset_id',
-                $validated['asset_id']
-            )
+            'asset_id',
+            $validated['asset_id']
+        )
             ->where('status', 'pending')
             ->exists();
 
@@ -89,7 +89,7 @@ class LoanRequestController extends Controller
             return back()
                 ->withErrors([
                     'asset_id' =>
-                        'Asset ini sudah ada permintaan peminjaman yang sedang menunggu persetujuan.',
+                    'Asset ini sudah ada permintaan peminjaman yang sedang menunggu persetujuan.',
                 ])
                 ->withInput();
         }
@@ -116,7 +116,7 @@ class LoanRequestController extends Controller
                 return back()
                     ->withErrors([
                         'borrower_signature' =>
-                            'Format tanda tangan tidak valid.',
+                        'Format tanda tangan tidak valid.',
                     ])
                     ->withInput();
             }
@@ -138,7 +138,7 @@ class LoanRequestController extends Controller
                 return back()
                     ->withErrors([
                         'borrower_signature' =>
-                            'Data tanda tangan tidak valid.',
+                        'Data tanda tangan tidak valid.',
                     ])
                     ->withInput();
             }
@@ -150,7 +150,7 @@ class LoanRequestController extends Controller
                 return back()
                     ->withErrors([
                         'borrower_signature' =>
-                            'Ukuran tanda tangan terlalu besar.',
+                        'Ukuran tanda tangan terlalu besar.',
                     ])
                     ->withInput();
             }
@@ -167,7 +167,7 @@ class LoanRequestController extends Controller
                 return back()
                     ->withErrors([
                         'borrower_signature' =>
-                            'File tanda tangan harus berupa PNG.',
+                        'File tanda tangan harus berupa PNG.',
                     ])
                     ->withInput();
             }
@@ -202,7 +202,6 @@ class LoanRequestController extends Controller
                 'notes'               => $validated['notes'] ?? null,
                 'status'              => 'pending',
             ]);
-
         } catch (\Exception $e) {
 
             /*
@@ -216,7 +215,7 @@ class LoanRequestController extends Controller
             return back()
                 ->withErrors([
                     'borrower_signature' =>
-                        'Gagal menyimpan tanda tangan.',
+                    'Gagal menyimpan tanda tangan.',
                 ])
                 ->withInput();
         }
@@ -239,9 +238,9 @@ class LoanRequestController extends Controller
     public function index()
     {
         $requests = LoanRequest::with([
-                'asset.assetCategory',
-                'loan',
-            ])
+            'asset.assetCategory',
+            'loan',
+        ])
             ->latest()
             ->paginate(15);
 
@@ -275,7 +274,7 @@ class LoanRequestController extends Controller
 
         $request->validate([
             'expected_return_at' =>
-                'nullable|date|after:today',
+            'nullable|date|after:today',
         ]);
 
         try {
@@ -337,9 +336,9 @@ class LoanRequestController extends Controller
                 */
 
                 $sequence = LoanDocumentSequence::where(
-                        'year',
-                        $year
-                    )
+                    'year',
+                    $year
+                )
                     ->where(
                         'month',
                         $month
@@ -420,43 +419,43 @@ class LoanRequestController extends Controller
 
                 $loan = Loan::create([
                     'asset_id' =>
-                        $lockedRequest->asset_id,
+                    $lockedRequest->asset_id,
 
                     'borrower_name' =>
-                        $lockedRequest->borrower_name,
+                    $lockedRequest->borrower_name,
 
                     'borrower_position' =>
-                        $lockedRequest->borrower_position,
+                    $lockedRequest->borrower_position,
 
                     'borrower_department' =>
-                        $lockedRequest->borrower_department,
+                    $lockedRequest->borrower_department,
 
                     'borrower_phone' =>
-                        $lockedRequest->borrower_phone,
+                    $lockedRequest->borrower_phone,
 
                     'borrower_signature' =>
-                        $lockedRequest->borrower_signature,
+                    $lockedRequest->borrower_signature,
 
                     'borrowed_at' =>
-                        $borrowedAt,
+                    $borrowedAt,
 
                     'expected_return_at' =>
-                        $request->expected_return_at ?: null,
+                    $request->expected_return_at ?: null,
 
                     'condition_before' =>
-                        $asset->condition,
+                    $asset->condition,
 
                     'purpose' =>
-                        $lockedRequest->purpose,
+                    $lockedRequest->purpose,
 
                     'notes' =>
-                        $lockedRequest->notes,
+                    $lockedRequest->notes,
 
                     'approved_by' =>
-                        'Muhamad Ariel Saputra',
+                    'Muhamad Ariel Saputra',
 
                     'document_number' =>
-                        $documentNumber,
+                    $documentNumber,
                 ]);
 
                 /*
@@ -477,13 +476,13 @@ class LoanRequestController extends Controller
 
                 $asset->update([
                     'status' =>
-                        Asset::STATUS_IN_USE,
+                    Asset::STATUS_IN_USE,
 
                     'original_location' =>
-                        $asset->location,
+                    $asset->location,
 
                     'location' =>
-                        'Dipinjam oleh: ' .
+                    'Dipinjam oleh: ' .
                         $lockedRequest->borrower_name,
                 ]);
 
@@ -500,13 +499,12 @@ class LoanRequestController extends Controller
 
                 return $loan;
             });
-
         } catch (\Exception $e) {
 
             return back()->with(
                 'error',
                 'Gagal approve: ' .
-                $e->getMessage()
+                    $e->getMessage()
             );
         }
 
@@ -534,18 +532,18 @@ class LoanRequestController extends Controller
 
         $request->validate([
             'reject_reason' =>
-                'required|string|max:500',
+            'required|string|max:500',
         ], [
             'reject_reason.required' =>
-                'Alasan penolakan wajib diisi.',
+            'Alasan penolakan wajib diisi.',
         ]);
 
         $loanRequest->update([
             'status' =>
-                'rejected',
+            'rejected',
 
             'reject_reason' =>
-                $request->reject_reason,
+            $request->reject_reason,
         ]);
 
         return redirect()

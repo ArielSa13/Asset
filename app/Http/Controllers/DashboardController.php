@@ -51,10 +51,10 @@ class DashboardController extends Controller
 
         // ── Top kategori terbanyak ──
         $topCategories = AssetCategory::withCount([
-                'assets',
-                'assets as available_count' => fn($q) => $q->where('status', 'available'),
-                'assets as in_use_count'    => fn($q) => $q->where('status', 'in_use'),
-            ])
+            'assets',
+            'assets as available_count' => fn($q) => $q->where('status', 'available'),
+            'assets as in_use_count'    => fn($q) => $q->where('status', 'in_use'),
+        ])
             ->having('assets_count', '>', 0)
             ->orderByDesc('assets_count')
             ->take(6)
@@ -91,14 +91,28 @@ class DashboardController extends Controller
         $totalAssetValue = Asset::sum('purchase_price');
 
         return view('dashboard.index', compact(
-            'totalAssets', 'availableAssets', 'inUseAssets',
-            'maintenanceAssets', 'retiredAssets',
-            'goodAssets', 'fairAssets', 'poorAssets', 'brokenAssets',
-            'activeLoans', 'overdueLoans', 'returnedThisMonth',
-            'pendingMaintenanceCount', 'ongoingMaintenanceCount',
-            'assetsByCategory', 'assetsByCondition',
-            'topCategories', 'activeLoansDetail', 'overdueLoansDetail',
-            'pendingMaintenance', 'recentAssets', 'totalAssetValue',
+            'totalAssets',
+            'availableAssets',
+            'inUseAssets',
+            'maintenanceAssets',
+            'retiredAssets',
+            'goodAssets',
+            'fairAssets',
+            'poorAssets',
+            'brokenAssets',
+            'activeLoans',
+            'overdueLoans',
+            'returnedThisMonth',
+            'pendingMaintenanceCount',
+            'ongoingMaintenanceCount',
+            'assetsByCategory',
+            'assetsByCondition',
+            'topCategories',
+            'activeLoansDetail',
+            'overdueLoansDetail',
+            'pendingMaintenance',
+            'recentAssets',
+            'totalAssetValue',
         ));
     }
 }

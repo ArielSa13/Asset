@@ -9,16 +9,10 @@
     <title>Request Peminjaman Asset</title>
 
     {{-- Bootstrap --}}
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     {{-- Bootstrap Icons --}}
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         /* =========================================================
@@ -199,830 +193,720 @@
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <div class="card shadow-lg request-card">
+        <div class="card shadow-lg request-card">
 
-        {{-- =====================================================
+            {{-- =====================================================
              HEADER
         ====================================================== --}}
 
-        <div class="request-header">
+            <div class="request-header">
 
-            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-3">
 
-                <div
-                    class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
-                    style="width:52px;height:52px;"
-                >
-                    <i class="bi bi-laptop fs-4"></i>
-                </div>
+                    <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                        style="width:52px;height:52px;">
+                        <i class="bi bi-laptop fs-4"></i>
+                    </div>
 
-                <div>
+                    <div>
 
-                    <h3 class="mb-1 fw-bold">
-                        Request Peminjaman Asset
-                    </h3>
+                        <h3 class="mb-1 fw-bold">
+                            Request Peminjaman Asset
+                        </h3>
 
-                    <p class="text-muted mb-0">
-                        Silakan isi data peminjaman dengan lengkap.
-                    </p>
+                        <p class="text-muted mb-0">
+                            Silakan isi data peminjaman dengan lengkap.
+                        </p>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
 
-
-        {{-- =====================================================
+            {{-- =====================================================
              BODY
         ====================================================== --}}
 
-        <div class="request-body">
+            <div class="request-body">
 
-            {{-- SUCCESS --}}
-            @if(session('success'))
+                {{-- SUCCESS --}}
+                @if (session('success'))
+                    <div class="alert alert-success">
 
-                <div class="alert alert-success">
+                        <i class="bi bi-check-circle me-2"></i>
 
-                    <i class="bi bi-check-circle me-2"></i>
-
-                    {{ session('success') }}
-
-                </div>
-
-            @endif
-
-
-            {{-- ERROR --}}
-            @if(session('error'))
-
-                <div class="alert alert-danger">
-
-                    <i class="bi bi-exclamation-circle me-2"></i>
-
-                    {{ session('error') }}
-
-                </div>
-
-            @endif
-
-
-            {{-- VALIDATION ERROR --}}
-            @if($errors->any())
-
-                <div class="alert alert-danger">
-
-                    <div class="fw-bold mb-2">
-                        Terdapat kesalahan:
-                    </div>
-
-                    <ul class="mb-0">
-
-                        @foreach($errors->all() as $error)
-
-                            <li>
-                                {{ $error }}
-                            </li>
-
-                        @endforeach
-
-                    </ul>
-
-                </div>
-
-            @endif
-
-
-            {{-- =================================================
-                 FORM
-            ================================================== --}}
-
-            <form
-                id="loanRequestForm"
-                action="{{ route('loan-requests.public.store') }}"
-                method="POST"
-            >
-
-                @csrf
-
-
-                {{-- =================================================
-                     DATA PEMINJAM
-                ================================================== --}}
-
-                <div class="section-title">
-
-                    <i class="bi bi-person me-2"></i>
-
-                    Data Peminjam
-
-                </div>
-
-
-                <div class="row g-3 mb-4">
-
-                    {{-- Nama --}}
-                    <div class="col-md-6">
-
-                        <label class="form-label">
-
-                            Nama Lengkap
-
-                            <span class="text-danger">*</span>
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="borrower_name"
-                            value="{{ old('borrower_name') }}"
-                            class="form-control @error('borrower_name') is-invalid @enderror"
-                            placeholder="Masukkan nama lengkap"
-                            required
-                        >
-
-                        @error('borrower_name')
-
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-
-                        @enderror
+                        {{ session('success') }}
 
                     </div>
+                @endif
 
 
-                    {{-- Jabatan --}}
-                    <div class="col-md-6">
+                {{-- ERROR --}}
+                @if (session('error'))
+                    <div class="alert alert-danger">
 
-                        <label class="form-label">
+                        <i class="bi bi-exclamation-circle me-2"></i>
 
-                            Jabatan
-
-                            <span class="text-danger">*</span>
-
-                        </label>
-
-                        <input
-                            type="text"
-                            name="borrower_position"
-                            value="{{ old('borrower_position') }}"
-                            class="form-control @error('borrower_position') is-invalid @enderror"
-                            placeholder="Contoh: IT Support, Staff, Supervisor"
-                            required
-                        >
-
-                        @error('borrower_position')
-
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-
-                        @enderror
+                        {{ session('error') }}
 
                     </div>
+                @endif
 
 
-                    {{-- Divisi --}}
-                    <div class="col-md-6">
+                {{-- VALIDATION ERROR --}}
+                @if ($errors->any())
 
-                        <label class="form-label">
+                    <div class="alert alert-danger">
 
-                            Divisi
+                        <div class="fw-bold mb-2">
+                            Terdapat kesalahan:
+                        </div>
 
-                            <span class="text-danger">*</span>
+                        <ul class="mb-0">
 
-                        </label>
-
-                        <input
-                            type="text"
-                            name="borrower_department"
-                            value="{{ old('borrower_department') }}"
-                            class="form-control @error('borrower_department') is-invalid @enderror"
-                            placeholder="Contoh: IT"
-                            required
-                        >
-
-                        @error('borrower_department')
-
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-
-                        @enderror
-
-                    </div>
-
-
-                    {{-- Nomor HP --}}
-                    <div class="col-md-6">
-
-                        <label class="form-label">
-                            Nomor HP
-                        </label>
-
-                        <input
-                            type="text"
-                            name="borrower_phone"
-                            value="{{ old('borrower_phone') }}"
-                            class="form-control @error('borrower_phone') is-invalid @enderror"
-                            placeholder="Contoh: 08123456789"
-                        >
-
-                        @error('borrower_phone')
-
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-
-                        @enderror
-
-                    </div>
-
-                </div>
-
-
-                {{-- =================================================
-                     PILIH ASSET
-                ================================================== --}}
-
-                <div class="section-title">
-
-                    <i class="bi bi-box-seam me-2"></i>
-
-                    Pilih Asset
-
-                </div>
-
-
-                @if($assets->isEmpty())
-
-                    <div class="alert alert-warning mb-4">
-
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-
-                        Saat ini tidak ada asset yang tersedia untuk dipinjam.
-
-                    </div>
-
-                @else
-
-
-                    {{-- =================================================
-                         FILTER KATEGORI
-                    ================================================== --}}
-
-                    <div class="mb-3">
-
-                        <div class="d-flex flex-wrap gap-2">
-
-                            {{-- Semua --}}
-                            <button
-                                type="button"
-                                class="btn btn-sm btn-outline-primary category-filter active"
-                                data-category="all"
-                            >
-
-                                Semua
-
-                                <span class="badge bg-secondary ms-1">
-                                    {{ $assets->count() }}
-                                </span>
-
-                            </button>
-
-
-                            {{-- Kategori --}}
-                            @foreach(
-                                $assets->groupBy(
-                                    fn ($asset) =>
-                                        $asset->assetCategory->name ?? 'Lainnya'
-                                )
-                                as $category => $categoryAssets
-                            )
-
-                                @php
-                                    $categorySlug = \Illuminate\Support\Str::slug($category);
-                                @endphp
-
-                                <button
-                                    type="button"
-                                    class="btn btn-sm btn-outline-primary category-filter"
-                                    data-category="{{ $categorySlug }}"
-                                >
-
-                                    {{ $category }}
-
-                                    <span class="badge bg-secondary ms-1">
-                                        {{ $categoryAssets->count() }}
-                                    </span>
-
-                                </button>
-
+                            @foreach ($errors->all() as $error)
+                                <li>
+                                    {{ $error }}
+                                </li>
                             @endforeach
 
-                        </div>
+                        </ul>
 
                     </div>
-
-
-                    {{-- =================================================
-                         DAFTAR ASSET
-                    ================================================== --}}
-
-                    <div
-                        class="asset-list mb-2"
-                        id="assetList"
-                    >
-
-                        @foreach($assets as $asset)
-
-                            @php
-
-                                $categoryName =
-                                    $asset->assetCategory->name ?? 'Lainnya';
-
-                                $categorySlug =
-                                    \Illuminate\Support\Str::slug($categoryName);
-
-                            @endphp
-
-
-                            <label
-                                class="asset-option"
-                                data-category="{{ $categorySlug }}"
-                            >
-
-                                <div class="d-flex align-items-start gap-3">
-
-                                    {{-- Radio --}}
-                                    <div class="pt-1">
-
-                                        <input
-                                            type="radio"
-                                            name="asset_id"
-                                            value="{{ $asset->id }}"
-                                            class="form-check-input asset-radio"
-                                            {{ old('asset_id') == $asset->id ? 'checked' : '' }}
-                                            required
-                                        >
-
-                                    </div>
-
-
-                                    {{-- Detail --}}
-                                    <div class="flex-grow-1">
-
-                                        {{-- Nama --}}
-                                        <div class="fw-semibold">
-
-                                            {{ $asset->name }}
-
-                                        </div>
-
-
-                                        {{-- Informasi --}}
-                                        <div class="small text-muted mt-1">
-
-                                            @if($asset->code)
-
-                                                <span class="me-3">
-
-                                                    <i class="bi bi-upc-scan me-1"></i>
-
-                                                    {{ $asset->code }}
-
-                                                </span>
-
-                                            @endif
-
-
-                                            @if($asset->brand)
-
-                                                <span class="me-3">
-
-                                                    <i class="bi bi-tag me-1"></i>
-
-                                                    {{ $asset->brand }}
-
-                                                </span>
-
-                                            @endif
-
-
-                                            @if($asset->model)
-
-                                                <span>
-
-                                                    <i class="bi bi-cpu me-1"></i>
-
-                                                    {{ $asset->model }}
-
-                                                </span>
-
-                                            @endif
-
-                                        </div>
-
-
-                                        {{-- Status --}}
-                                        <div class="mt-2">
-
-                                            <span class="badge text-bg-success">
-
-                                                Tersedia
-
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </label>
-
-                        @endforeach
-
-
-                        {{-- Tidak ditemukan --}}
-                        <div
-                            id="noAssetFound"
-                            class="alert alert-light border text-center mt-2"
-                        >
-
-                            <i class="bi bi-search me-2"></i>
-
-                            Tidak ada asset pada kategori ini.
-
-                        </div>
-
-                    </div>
-
-
-                    {{-- Validation --}}
-                    @error('asset_id')
-
-                        <div class="text-danger small mb-3">
-
-                            {{ $message }}
-
-                        </div>
-
-                    @enderror
 
                 @endif
 
 
                 {{-- =================================================
-                     KEPERLUAN
+                 FORM
+            ================================================== --}}
+
+                <form id="loanRequestForm" action="{{ route('loan-requests.public.store') }}" method="POST">
+
+                    @csrf
+
+
+                    {{-- =================================================
+                     DATA PEMINJAM
                 ================================================== --}}
 
-                <div class="section-title mt-4">
+                    <div class="section-title">
 
-                    <i class="bi bi-clipboard-text me-2"></i>
+                        <i class="bi bi-person me-2"></i>
 
-                    Keperluan Peminjaman
-
-                </div>
-
-
-                <div class="mb-4">
-
-                    <label class="form-label">
-
-                        Keperluan / Tujuan
-
-                        <span class="text-danger">*</span>
-
-                    </label>
-
-
-                    <textarea
-                        name="purpose"
-                        rows="3"
-                        class="form-control @error('purpose') is-invalid @enderror"
-                        placeholder="Jelaskan tujuan penggunaan asset..."
-                        required
-                    >{{ old('purpose') }}</textarea>
-
-
-                    @error('purpose')
-
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-
-                    @enderror
-
-                </div>
-
-
-                {{-- =================================================
-                     CATATAN
-                ================================================== --}}
-
-                <div class="mb-4">
-
-                    <label class="form-label">
-                        Catatan
-                    </label>
-
-
-                    <textarea
-                        name="notes"
-                        rows="3"
-                        class="form-control @error('notes') is-invalid @enderror"
-                        placeholder="Catatan tambahan jika diperlukan..."
-                    >{{ old('notes') }}</textarea>
-
-
-                    @error('notes')
-
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-
-                    @enderror
-
-                </div>
-
-
-                {{-- =================================================
-                     TANDA TANGAN
-                ================================================== --}}
-
-                <div class="section-title">
-
-                    <i class="bi bi-pen me-2"></i>
-
-                    Tanda Tangan Peminjam
-
-                </div>
-
-
-                <div class="mb-4">
-
-                    <div class="signature-wrapper">
-
-                        <canvas id="signatureCanvas"></canvas>
+                        Data Peminjam
 
                     </div>
 
 
-                    <input
-                        type="hidden"
-                        name="borrower_signature"
-                        id="borrower_signature"
-                    >
+                    <div class="row g-3 mb-4">
 
+                        {{-- Nama --}}
+                        <div class="col-md-6">
 
-                    <div class="d-flex justify-content-between align-items-center mt-2">
+                            <label class="form-label">
 
-                        <div class="signature-info">
+                                Nama Lengkap
 
-                            Silakan tanda tangan menggunakan mouse,
-                            touchpad, atau layar sentuh.
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+                            <input type="text" name="borrower_name" value="{{ old('borrower_name') }}"
+                                class="form-control @error('borrower_name') is-invalid @enderror"
+                                placeholder="Masukkan nama lengkap" required>
+
+                            @error('borrower_name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
 
                         </div>
 
 
-                        <button
-                            type="button"
-                            class="btn btn-sm btn-outline-danger"
-                            id="clearSignature"
-                        >
+                        {{-- Jabatan --}}
+                        <div class="col-md-6">
 
-                            <i class="bi bi-eraser me-1"></i>
+                            <label class="form-label">
 
-                            Hapus
+                                Jabatan
+
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+                            <input type="text" name="borrower_position" value="{{ old('borrower_position') }}"
+                                class="form-control @error('borrower_position') is-invalid @enderror"
+                                placeholder="Contoh: IT Support, Staff, Supervisor" required>
+
+                            @error('borrower_position')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+
+                        </div>
+
+
+                        {{-- Divisi --}}
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Divisi
+
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+                            <input type="text" name="borrower_department" value="{{ old('borrower_department') }}"
+                                class="form-control @error('borrower_department') is-invalid @enderror"
+                                placeholder="Contoh: IT" required>
+
+                            @error('borrower_department')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+
+                        </div>
+
+
+                        {{-- Nomor HP --}}
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Nomor HP
+                            </label>
+
+                            <input type="text" name="borrower_phone" value="{{ old('borrower_phone') }}"
+                                class="form-control @error('borrower_phone') is-invalid @enderror"
+                                placeholder="Contoh: 08123456789">
+
+                            @error('borrower_phone')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- =================================================
+                     PILIH ASSET
+                ================================================== --}}
+
+                    <div class="section-title">
+
+                        <i class="bi bi-box-seam me-2"></i>
+
+                        Pilih Asset
+
+                    </div>
+
+
+                    @if ($assets->isEmpty())
+
+                        <div class="alert alert-warning mb-4">
+
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+
+                            Saat ini tidak ada asset yang tersedia untuk dipinjam.
+
+                        </div>
+                    @else
+                        {{-- =================================================
+                         FILTER KATEGORI
+                    ================================================== --}}
+
+                        <div class="mb-3">
+
+                            <div class="d-flex flex-wrap gap-2">
+
+                                {{-- Semua --}}
+                                <button type="button" class="btn btn-sm btn-outline-primary category-filter active"
+                                    data-category="all">
+
+                                    Semua
+
+                                    <span class="badge bg-secondary ms-1">
+                                        {{ $assets->count() }}
+                                    </span>
+
+                                </button>
+
+
+                                {{-- Kategori --}}
+                                @foreach ($assets->groupBy(fn($asset) => $asset->assetCategory->name ?? 'Lainnya') as $category => $categoryAssets)
+                                    @php
+                                        $categorySlug = \Illuminate\Support\Str::slug($category);
+                                    @endphp
+
+                                    <button type="button" class="btn btn-sm btn-outline-primary category-filter"
+                                        data-category="{{ $categorySlug }}">
+
+                                        {{ $category }}
+
+                                        <span class="badge bg-secondary ms-1">
+                                            {{ $categoryAssets->count() }}
+                                        </span>
+
+                                    </button>
+                                @endforeach
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- =================================================
+                         DAFTAR ASSET
+                    ================================================== --}}
+
+                        <div class="asset-list mb-2" id="assetList">
+
+                            @foreach ($assets as $asset)
+                                @php
+
+                                    $categoryName = $asset->assetCategory->name ?? 'Lainnya';
+
+                                    $categorySlug = \Illuminate\Support\Str::slug($categoryName);
+
+                                @endphp
+
+
+                                <label class="asset-option" data-category="{{ $categorySlug }}">
+
+                                    <div class="d-flex align-items-start gap-3">
+
+                                        {{-- Radio --}}
+                                        <div class="pt-1">
+
+                                            <input type="radio" name="asset_id" value="{{ $asset->id }}"
+                                                class="form-check-input asset-radio"
+                                                {{ old('asset_id') == $asset->id ? 'checked' : '' }} required>
+
+                                        </div>
+
+
+                                        {{-- Detail --}}
+                                        <div class="flex-grow-1">
+
+                                            {{-- Nama --}}
+                                            <div class="fw-semibold">
+
+                                                {{ $asset->name }}
+
+                                            </div>
+
+
+                                            {{-- Informasi --}}
+                                            <div class="small text-muted mt-1">
+
+                                                @if ($asset->code)
+                                                    <span class="me-3">
+
+                                                        <i class="bi bi-upc-scan me-1"></i>
+
+                                                        {{ $asset->code }}
+
+                                                    </span>
+                                                @endif
+
+
+                                                @if ($asset->brand)
+                                                    <span class="me-3">
+
+                                                        <i class="bi bi-tag me-1"></i>
+
+                                                        {{ $asset->brand }}
+
+                                                    </span>
+                                                @endif
+
+
+                                                @if ($asset->model)
+                                                    <span>
+
+                                                        <i class="bi bi-cpu me-1"></i>
+
+                                                        {{ $asset->model }}
+
+                                                    </span>
+                                                @endif
+
+                                            </div>
+
+
+                                            {{-- Status --}}
+                                            <div class="mt-2">
+
+                                                <span class="badge text-bg-success">
+
+                                                    Tersedia
+
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </label>
+                            @endforeach
+
+
+                            {{-- Tidak ditemukan --}}
+                            <div id="noAssetFound" class="alert alert-light border text-center mt-2">
+
+                                <i class="bi bi-search me-2"></i>
+
+                                Tidak ada asset pada kategori ini.
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- Validation --}}
+                        @error('asset_id')
+                            <div class="text-danger small mb-3">
+
+                                {{ $message }}
+
+                            </div>
+                        @enderror
+
+                    @endif
+
+
+                    {{-- =================================================
+                     KEPERLUAN
+                ================================================== --}}
+
+                    <div class="section-title mt-4">
+
+                        <i class="bi bi-clipboard-text me-2"></i>
+
+                        Keperluan Peminjaman
+
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+
+                            Keperluan / Tujuan
+
+                            <span class="text-danger">*</span>
+
+                        </label>
+
+
+                        <textarea name="purpose" rows="3" class="form-control @error('purpose') is-invalid @enderror"
+                            placeholder="Jelaskan tujuan penggunaan asset..." required>{{ old('purpose') }}</textarea>
+
+
+                        @error('purpose')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+
+                    {{-- =================================================
+                     CATATAN
+                ================================================== --}}
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+                            Catatan
+                        </label>
+
+
+                        <textarea name="notes" rows="3" class="form-control @error('notes') is-invalid @enderror"
+                            placeholder="Catatan tambahan jika diperlukan...">{{ old('notes') }}</textarea>
+
+
+                        @error('notes')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+
+                    </div>
+
+
+                    {{-- =================================================
+                     TANDA TANGAN
+                ================================================== --}}
+
+                    <div class="section-title">
+
+                        <i class="bi bi-pen me-2"></i>
+
+                        Tanda Tangan Peminjam
+
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <div class="signature-wrapper">
+
+                            <canvas id="signatureCanvas"></canvas>
+
+                        </div>
+
+
+                        <input type="hidden" name="borrower_signature" id="borrower_signature">
+
+
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+
+                            <div class="signature-info">
+
+                                Silakan tanda tangan menggunakan mouse,
+                                touchpad, atau layar sentuh.
+
+                            </div>
+
+
+                            <button type="button" class="btn btn-sm btn-outline-danger" id="clearSignature">
+
+                                <i class="bi bi-eraser me-1"></i>
+
+                                Hapus
+
+                            </button>
+
+                        </div>
+
+
+                        @error('borrower_signature')
+                            <div class="text-danger small mt-2">
+
+                                {{ $message }}
+
+                            </div>
+                        @enderror
+
+                    </div>
+
+
+                    {{-- =================================================
+                     SUBMIT
+                ================================================== --}}
+
+                    <div class="d-grid">
+
+                        <button type="submit" id="submitButton" class="btn btn-primary btn-lg"
+                            {{ $assets->isEmpty() ? 'disabled' : '' }}>
+
+                            <i class="bi bi-send me-2"></i>
+
+                            Ajukan Peminjaman
 
                         </button>
 
                     </div>
 
+                </form>
 
-                    @error('borrower_signature')
-
-                        <div class="text-danger small mt-2">
-
-                            {{ $message }}
-
-                        </div>
-
-                    @enderror
-
-                </div>
-
-
-                {{-- =================================================
-                     SUBMIT
-                ================================================== --}}
-
-                <div class="d-grid">
-
-                    <button
-                        type="submit"
-                        id="submitButton"
-                        class="btn btn-primary btn-lg"
-                        {{ $assets->isEmpty() ? 'disabled' : '' }}
-                    >
-
-                        <i class="bi bi-send me-2"></i>
-
-                        Ajukan Peminjaman
-
-                    </button>
-
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
     </div>
 
-</div>
 
-
-{{-- =============================================================
+    {{-- =============================================================
      SIGNATURE PAD
 ============================================================= --}}
 
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@5.0.4/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@5.0.4/dist/signature_pad.umd.min.js"></script>
 
 
-<script>
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    /*
-    |--------------------------------------------------------------------------
-    | ELEMENT
-    |--------------------------------------------------------------------------
-    */
-
-    const form =
-        document.getElementById('loanRequestForm');
-
-    const canvas =
-        document.getElementById('signatureCanvas');
-
-    const signatureInput =
-        document.getElementById('borrower_signature');
-
-    const clearButton =
-        document.getElementById('clearSignature');
-
-    const submitButton =
-        document.getElementById('submitButton');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | SIGNATURE PAD
-    |--------------------------------------------------------------------------
-    */
-
-    const signaturePad =
-        new SignaturePad(canvas, {
-            backgroundColor: 'rgb(255, 255, 255)',
-            penColor: 'rgb(0, 0, 0)',
-            minWidth: 0.8,
-            maxWidth: 2.5
-        });
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | RESIZE SIGNATURE CANVAS
-    |--------------------------------------------------------------------------
-    */
-
-    function resizeCanvas() {
-
-        const ratio =
-            Math.max(
-                window.devicePixelRatio || 1,
-                1
-            );
-
-        const rect =
-            canvas.getBoundingClientRect();
-
-
-        /*
-        | Simpan data signature
-        */
-
-        const existingData =
-            signaturePad.isEmpty()
-                ? null
-                : signaturePad.toData();
-
-
-        /*
-        | Resize canvas
-        */
-
-        canvas.width =
-            rect.width * ratio;
-
-        canvas.height =
-            rect.height * ratio;
-
-
-        canvas
-            .getContext('2d')
-            .scale(ratio, ratio);
-
-
-        signaturePad.clear();
-
-
-        /*
-        | Restore signature
-        */
-
-        if (existingData) {
-
-            signaturePad.fromData(existingData);
-
-        }
-
-    }
-
-
-    resizeCanvas();
-
-    window.addEventListener(
-        'resize',
-        resizeCanvas
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | CLEAR SIGNATURE
-    |--------------------------------------------------------------------------
-    */
-
-    clearButton.addEventListener(
-        'click',
-        function () {
-
-            signaturePad.clear();
-
-            signatureInput.value = '';
-
-        }
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | FORM SUBMIT
-    |--------------------------------------------------------------------------
-    */
-
-    form.addEventListener(
-        'submit',
-        function (event) {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
 
             /*
-            | Pastikan tanda tangan sudah diisi
+            |--------------------------------------------------------------------------
+            | ELEMENT
+            |--------------------------------------------------------------------------
             */
 
-            if (signaturePad.isEmpty()) {
+            const form =
+                document.getElementById('loanRequestForm');
 
-                event.preventDefault();
+            const canvas =
+                document.getElementById('signatureCanvas');
 
-                alert(
-                    'Silakan tanda tangan terlebih dahulu.'
-                );
+            const signatureInput =
+                document.getElementById('borrower_signature');
 
-                return;
+            const clearButton =
+                document.getElementById('clearSignature');
+
+            const submitButton =
+                document.getElementById('submitButton');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | SIGNATURE PAD
+            |--------------------------------------------------------------------------
+            */
+
+            const signaturePad =
+                new SignaturePad(canvas, {
+                    backgroundColor: 'rgb(255, 255, 255)',
+                    penColor: 'rgb(0, 0, 0)',
+                    minWidth: 0.8,
+                    maxWidth: 2.5
+                });
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | RESIZE SIGNATURE CANVAS
+            |--------------------------------------------------------------------------
+            */
+
+            function resizeCanvas() {
+
+                const ratio =
+                    Math.max(
+                        window.devicePixelRatio || 1,
+                        1
+                    );
+
+                const rect =
+                    canvas.getBoundingClientRect();
+
+
+                /*
+                | Simpan data signature
+                */
+
+                const existingData =
+                    signaturePad.isEmpty() ?
+                    null :
+                    signaturePad.toData();
+
+
+                /*
+                | Resize canvas
+                */
+
+                canvas.width =
+                    rect.width * ratio;
+
+                canvas.height =
+                    rect.height * ratio;
+
+
+                canvas
+                    .getContext('2d')
+                    .scale(ratio, ratio);
+
+
+                signaturePad.clear();
+
+
+                /*
+                | Restore signature
+                */
+
+                if (existingData) {
+
+                    signaturePad.fromData(existingData);
+
+                }
 
             }
 
 
+            resizeCanvas();
+
+            window.addEventListener(
+                'resize',
+                resizeCanvas
+            );
+
+
             /*
-            | Convert signature menjadi PNG Base64
+            |--------------------------------------------------------------------------
+            | CLEAR SIGNATURE
+            |--------------------------------------------------------------------------
             */
 
-            signatureInput.value =
-                signaturePad.toDataURL('image/png');
+            clearButton.addEventListener(
+                'click',
+                function() {
+
+                    signaturePad.clear();
+
+                    signatureInput.value = '';
+
+                }
+            );
 
 
             /*
-            | Cegah double submit
+            |--------------------------------------------------------------------------
+            | FORM SUBMIT
+            |--------------------------------------------------------------------------
             */
 
-            submitButton.disabled = true;
+            form.addEventListener(
+                'submit',
+                function(event) {
 
-            submitButton.innerHTML = `
+                    /*
+                    | Pastikan tanda tangan sudah diisi
+                    */
+
+                    if (signaturePad.isEmpty()) {
+
+                        event.preventDefault();
+
+                        alert(
+                            'Silakan tanda tangan terlebih dahulu.'
+                        );
+
+                        return;
+
+                    }
+
+
+                    /*
+                    | Convert signature menjadi PNG Base64
+                    */
+
+                    signatureInput.value =
+                        signaturePad.toDataURL('image/png');
+
+
+                    /*
+                    | Cegah double submit
+                    */
+
+                    submitButton.disabled = true;
+
+                    submitButton.innerHTML = `
                 <span
                     class="spinner-border spinner-border-sm me-2"
                     role="status"
@@ -1032,59 +916,86 @@ document.addEventListener('DOMContentLoaded', function () {
                 Mengirim...
             `;
 
-        }
-    );
+                }
+            );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | ASSET SELECTION
-    |--------------------------------------------------------------------------
-    */
+            /*
+            |--------------------------------------------------------------------------
+            | ASSET SELECTION
+            |--------------------------------------------------------------------------
+            */
 
-    const assetRadios =
-        document.querySelectorAll('.asset-radio');
+            const assetRadios =
+                document.querySelectorAll('.asset-radio');
 
 
-    assetRadios.forEach(
-        function (radio) {
+            assetRadios.forEach(
+                function(radio) {
 
-            radio.addEventListener(
-                'change',
-                function () {
+                    radio.addEventListener(
+                        'change',
+                        function() {
 
-                    /*
-                    | Hapus selected dari semua
-                    */
+                            /*
+                            | Hapus selected dari semua
+                            */
 
-                    document
-                        .querySelectorAll('.asset-option')
-                        .forEach(
-                            function (option) {
+                            document
+                                .querySelectorAll('.asset-option')
+                                .forEach(
+                                    function(option) {
 
-                                option.classList.remove(
+                                        option.classList.remove(
+                                            'selected'
+                                        );
+
+                                    }
+                                );
+
+
+                            /*
+                            | Tambahkan selected
+                            */
+
+                            const selectedOption =
+                                radio.closest(
+                                    '.asset-option'
+                                );
+
+
+                            if (selectedOption) {
+
+                                selectedOption.classList.add(
                                     'selected'
                                 );
 
                             }
-                        );
+
+                        }
+                    );
 
 
                     /*
-                    | Tambahkan selected
+                    | Restore selected
+                    | ketika validation gagal
                     */
 
-                    const selectedOption =
-                        radio.closest(
-                            '.asset-option'
-                        );
+                    if (radio.checked) {
+
+                        const selectedOption =
+                            radio.closest(
+                                '.asset-option'
+                            );
 
 
-                    if (selectedOption) {
+                        if (selectedOption) {
 
-                        selectedOption.classList.add(
-                            'selected'
-                        );
+                            selectedOption.classList.add(
+                                'selected'
+                            );
+
+                        }
 
                     }
 
@@ -1093,177 +1004,150 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             /*
-            | Restore selected
-            | ketika validation gagal
+            |--------------------------------------------------------------------------
+            | CATEGORY FILTER
+            |--------------------------------------------------------------------------
             */
 
-            if (radio.checked) {
+            const filterButtons =
+                document.querySelectorAll(
+                    '.category-filter'
+                );
 
-                const selectedOption =
-                    radio.closest(
-                        '.asset-option'
-                    );
+            const assetOptions =
+                document.querySelectorAll(
+                    '.asset-option'
+                );
 
-
-                if (selectedOption) {
-
-                    selectedOption.classList.add(
-                        'selected'
-                    );
-
-                }
-
-            }
-
-        }
-    );
+            const noAssetFound =
+                document.getElementById(
+                    'noAssetFound'
+                );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | CATEGORY FILTER
-    |--------------------------------------------------------------------------
-    */
+            filterButtons.forEach(
+                function(button) {
 
-    const filterButtons =
-        document.querySelectorAll(
-            '.category-filter'
-        );
+                    button.addEventListener(
+                        'click',
+                        function() {
 
-    const assetOptions =
-        document.querySelectorAll(
-            '.asset-option'
-        );
+                            /*
+                            | Kategori yang dipilih
+                            */
 
-    const noAssetFound =
-        document.getElementById(
-            'noAssetFound'
-        );
+                            const selectedCategory =
+                                this.dataset.category;
 
 
-    filterButtons.forEach(
-        function (button) {
+                            /*
+                            | Update tombol active
+                            */
 
-            button.addEventListener(
-                'click',
-                function () {
+                            filterButtons.forEach(
+                                function(btn) {
 
-                    /*
-                    | Kategori yang dipilih
-                    */
+                                    btn.classList.remove(
+                                        'active'
+                                    );
 
-                    const selectedCategory =
-                        this.dataset.category;
+                                }
+                            );
 
 
-                    /*
-                    | Update tombol active
-                    */
-
-                    filterButtons.forEach(
-                        function (btn) {
-
-                            btn.classList.remove(
+                            this.classList.add(
                                 'active'
                             );
 
-                        }
-                    );
+
+                            /*
+                            | Hitung asset yang tampil
+                            */
+
+                            let visibleCount = 0;
 
 
-                    this.classList.add(
-                        'active'
-                    );
+                            /*
+                            | Filter asset
+                            */
+
+                            assetOptions.forEach(
+                                function(asset) {
+
+                                    const assetCategory =
+                                        asset.dataset.category;
 
 
-                    /*
-                    | Hitung asset yang tampil
-                    */
-
-                    let visibleCount = 0;
+                                    const shouldShow =
+                                        selectedCategory === 'all' ||
+                                        assetCategory === selectedCategory;
 
 
-                    /*
-                    | Filter asset
-                    */
+                                    if (shouldShow) {
 
-                    assetOptions.forEach(
-                        function (asset) {
+                                        asset.classList.remove(
+                                            'hidden'
+                                        );
 
-                            const assetCategory =
-                                asset.dataset.category;
+                                        visibleCount++;
+
+                                    } else {
+
+                                        asset.classList.add(
+                                            'hidden'
+                                        );
+
+                                    }
+
+                                }
+                            );
 
 
-                            const shouldShow =
-                                selectedCategory === 'all' ||
-                                assetCategory === selectedCategory;
+                            /*
+                            | Pesan jika kosong
+                            */
 
+                            if (visibleCount === 0) {
 
-                            if (shouldShow) {
-
-                                asset.classList.remove(
-                                    'hidden'
-                                );
-
-                                visibleCount++;
+                                noAssetFound.style.display =
+                                    'block';
 
                             } else {
 
-                                asset.classList.add(
-                                    'hidden'
-                                );
+                                noAssetFound.style.display =
+                                    'none';
 
                             }
 
                         }
                     );
 
-
-                    /*
-                    | Pesan jika kosong
-                    */
-
-                    if (visibleCount === 0) {
-
-                        noAssetFound.style.display =
-                            'block';
-
-                    } else {
-
-                        noAssetFound.style.display =
-                            'none';
-
-                    }
-
                 }
             );
 
-        }
-    );
+
+            /*
+            |--------------------------------------------------------------------------
+            | DEFAULT FILTER
+            |--------------------------------------------------------------------------
+            */
+
+            const defaultFilter =
+                document.querySelector(
+                    '.category-filter.active'
+                );
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | DEFAULT FILTER
-    |--------------------------------------------------------------------------
-    */
+            if (defaultFilter) {
 
-    const defaultFilter =
-        document.querySelector(
-            '.category-filter.active'
-        );
+                defaultFilter.click();
 
+            }
 
-    if (defaultFilter) {
-
-        defaultFilter.click();
-
-    }
-
-});
-
-</script>
+        });
+    </script>
 
 </body>
+
 </html>
 ```
