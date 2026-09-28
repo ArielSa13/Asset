@@ -8,7 +8,7 @@
     
 
     <div class="login-logo">
-        <img src="<?php echo e(asset('images/logo.png')); ?>" alt="AssetMS Logo">
+        <img src="<?php echo e(asset('images/logo.svg')); ?>" alt="AssetMS Logo">
     </div>
 
 
@@ -17,11 +17,6 @@
     
 
     <div class="form-header">
-
-        <h2>
-            Sign in to your account
-        </h2>
-
         <p>
             Masuk ke Asset Management System.
         </p>
@@ -207,9 +202,9 @@ unset($__errorArgs, $__bag); ?>
     <?php $__env->startPush('styles'); ?>
         <style>
             /* =========================================================
-                                       LOGIN LOGO
-                                       Ukuran dikunci agar tidak mengikuti ukuran container
-                                       ========================================================= */
+                                                       LOGIN LOGO
+                                                       Ukuran dikunci agar tidak mengikuti ukuran container
+                                                       ========================================================= */
 
             .login-logo {
                 display: flex !important;
@@ -254,10 +249,10 @@ unset($__errorArgs, $__bag); ?>
     <?php $__env->startPush('scripts'); ?>
         <script>
             /*
-                                                                |--------------------------------------------------------------------------
-                                                                | TOGGLE PASSWORD
-                                                                |--------------------------------------------------------------------------
-                                                                */
+                                                                                |--------------------------------------------------------------------------
+                                                                                | TOGGLE PASSWORD
+                                                                                |--------------------------------------------------------------------------
+                                                                                */
 
             function togglePassword() {
 
