@@ -245,7 +245,7 @@
             </strong>
 
             telah dilakukan serah terima peralatan kerja kepada karyawan
-            <strong>PT. VIVA MEDIA BARU</strong>
+            <strong>PT. ONE DIGITAL MEDIA</strong>
             dengan keterangan berikut:
 
         </div>
@@ -486,7 +486,11 @@
                     </strong>
 
                     <div class="signature-space">
-                        {{-- Area kosong tanda tangan pemberi --}}
+
+                        @if (!empty($itSupportSignature) && is_file($itSupportSignature))
+                            <img src="{{ $itSupportSignature }}" alt="Tanda Tangan IT Support" class="signature-image">
+                        @endif
+
                     </div>
 
                     <div class="signature-name">

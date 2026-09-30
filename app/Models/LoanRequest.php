@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LoanRequest extends Model
 {
     protected $fillable = [
+        'request_number',
         'asset_id',
         'borrower_name',
         'borrower_position',

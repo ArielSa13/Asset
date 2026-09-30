@@ -245,7 +245,7 @@
             </strong>
 
             telah dilakukan serah terima peralatan kerja kepada karyawan
-            <strong>PT. VIVA MEDIA BARU</strong>
+            <strong>PT. ONE DIGITAL MEDIA</strong>
             dengan keterangan berikut:
 
         </div>
@@ -481,7 +481,11 @@
                     </strong>
 
                     <div class="signature-space">
-                        
+
+                        <?php if(!empty($itSupportSignature) && is_file($itSupportSignature)): ?>
+                            <img src="<?php echo e($itSupportSignature); ?>" alt="Tanda Tangan IT Support" class="signature-image">
+                        <?php endif; ?>
+
                     </div>
 
                     <div class="signature-name">

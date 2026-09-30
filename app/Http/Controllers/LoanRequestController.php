@@ -6,9 +6,11 @@ use App\Models\Asset;
 use App\Models\Loan;
 use App\Models\LoanRequest;
 use App\Models\LoanDocumentSequence;
+use App\Models\LoanRequestSequence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LoanRequestController extends Controller
 {
@@ -31,198 +33,136 @@ class LoanRequestController extends Controller
     public function publicStore(Request $request)
     {
         $validated = $request->validate([
-            'asset_id'            => 'required|exists:assets,id',
-            'borrower_name'       => 'required|string|max:255',
-            'borrower_position'   => 'required|string|max:255',
+            'asset_id' => 'required|exists:assets,id',
+            'borrower_name' => 'required|string|max:255',
+            'borrower_position' => 'required|string|max:255',
             'borrower_department' => 'nullable|string|max:255',
-            'borrower_phone'      => 'nullable|string|max:50',
-            'agreement_accepted'  => 'required|accepted',
-            'borrower_signature'  => 'required|string',
-            'purpose'             => 'required|string|max:500',
-            'notes'               => 'nullable|string|max:1000',
+            'borrower_phone' => 'nullable|string|max:50',
+            'agreement_accepted' => 'required|accepted',
+            'borrower_signature' => 'required|string',
+            'purpose' => 'required|string|max:500',
+            'notes' => 'nullable|string|max:1000',
         ], [
-            'asset_id.required' =>
-            'Pilih asset yang ingin dipinjam.',
-
-            'borrower_name.required' =>
-            'Nama peminjam wajib diisi.',
-
-            'borrower_position.required' =>
-            'Jabatan peminjam wajib diisi.',
-
-            'borrower_signature.required' =>
-            'Tanda tangan wajib diisi.',
-
-            'purpose.required' =>
-            'Keperluan peminjaman wajib diisi.',
+            'asset_id.required' => 'Pilih asset yang ingin dipinjam.',
+            'borrower_name.required' => 'Nama peminjam wajib diisi.',
+            'borrower_position.required' => 'Jabatan peminjam wajib diisi.',
+            'borrower_signature.required' => 'Tanda tangan wajib diisi.',
+            'purpose.required' => 'Keperluan peminjaman wajib diisi.',
         ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Pastikan asset masih tersedia
-        |--------------------------------------------------------------------------
-        */
 
         $asset = Asset::findOrFail($validated['asset_id']);
 
         if ($asset->status !== 'available') {
-            return back()
-                ->withErrors([
-                    'asset_id' => 'Asset ini sudah tidak tersedia.',
-                ])
-                ->withInput();
+            return back()->withErrors([
+                'asset_id' => 'Asset ini sudah tidak tersedia.',
+            ])->withInput();
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Cek pending request
-        |--------------------------------------------------------------------------
-        */
-
-        $existingRequest = LoanRequest::where(
-            'asset_id',
-            $validated['asset_id']
-        )
+        $existingRequest = LoanRequest::where('asset_id', $validated['asset_id'])
             ->where('status', 'pending')
             ->exists();
 
         if ($existingRequest) {
-            return back()
-                ->withErrors([
-                    'asset_id' =>
-                    'Asset ini sudah ada permintaan peminjaman yang sedang menunggu persetujuan.',
-                ])
-                ->withInput();
+            return back()->withErrors([
+                'asset_id' => 'Asset ini sudah ada permintaan peminjaman yang sedang menunggu persetujuan.',
+            ])->withInput();
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Simpan tanda tangan
-        |--------------------------------------------------------------------------
-        */
 
         $signaturePath = null;
 
         try {
-
             $signature = $validated['borrower_signature'];
 
-            /*
-             * Pastikan format data URI PNG
-             */
-            if (! preg_match(
-                '/^data:image\/png;base64,/',
-                $signature
-            )) {
-                return back()
-                    ->withErrors([
-                        'borrower_signature' =>
-                        'Format tanda tangan tidak valid.',
-                    ])
-                    ->withInput();
+            if (! preg_match('/^data:image\/png;base64,/', $signature)) {
+                return back()->withErrors([
+                    'borrower_signature' => 'Format tanda tangan tidak valid.',
+                ])->withInput();
             }
 
-            /*
-             * Ambil bagian base64
-             */
-            $signatureData = substr(
-                $signature,
-                strpos($signature, ',') + 1
-            );
-
-            $signatureData = base64_decode(
-                $signatureData,
-                true
-            );
+            $signatureData = substr($signature, strpos($signature, ',') + 1);
+            $signatureData = base64_decode($signatureData, true);
 
             if ($signatureData === false) {
-                return back()
-                    ->withErrors([
-                        'borrower_signature' =>
-                        'Data tanda tangan tidak valid.',
-                    ])
-                    ->withInput();
+                return back()->withErrors([
+                    'borrower_signature' => 'Data tanda tangan tidak valid.',
+                ])->withInput();
             }
 
-            /*
-             * Batasi ukuran signature 2 MB
-             */
             if (strlen($signatureData) > 2 * 1024 * 1024) {
-                return back()
-                    ->withErrors([
-                        'borrower_signature' =>
-                        'Ukuran tanda tangan terlalu besar.',
-                    ])
-                    ->withInput();
+                return back()->withErrors([
+                    'borrower_signature' => 'Ukuran tanda tangan terlalu besar.',
+                ])->withInput();
             }
 
-            /*
-             * Pastikan benar-benar PNG
-             */
             $imageInfo = getimagesizefromstring($signatureData);
 
-            if (
-                $imageInfo === false ||
-                ($imageInfo['mime'] ?? null) !== 'image/png'
-            ) {
-                return back()
-                    ->withErrors([
-                        'borrower_signature' =>
-                        'File tanda tangan harus berupa PNG.',
-                    ])
-                    ->withInput();
+            if ($imageInfo === false || ($imageInfo['mime'] ?? null) !== 'image/png') {
+                return back()->withErrors([
+                    'borrower_signature' => 'File tanda tangan harus berupa PNG.',
+                ])->withInput();
             }
 
-            /*
-             * Nama file random
-             */
-            $signaturePath =
-                'signatures/' .
-                \Illuminate\Support\Str::uuid() .
-                '.png';
+            $signaturePath = 'signatures/' . \Illuminate\Support\Str::uuid() . '.png';
 
-            Storage::disk('public')->put(
-                $signaturePath,
-                $signatureData
-            );
+            Storage::disk('public')->put($signaturePath, $signatureData);
 
-            /*
-            |--------------------------------------------------------------------------
-            | Simpan request
-            |--------------------------------------------------------------------------
-            */
+            $loanRequest = DB::transaction(function () use ($validated, $signaturePath) {
+                $now = now()->setTimezone('Asia/Jakarta');
+                $year = (int) $now->format('Y');
+                $month = (int) $now->format('n');
 
-            LoanRequest::create([
-                'asset_id'            => $validated['asset_id'],
-                'borrower_name'       => $validated['borrower_name'],
-                'borrower_position'   => $validated['borrower_position'],
-                'borrower_department' => $validated['borrower_department'] ?? null,
-                'borrower_phone'      => $validated['borrower_phone'] ?? null,
-                'borrower_signature'  => $signaturePath,
-                'purpose'             => $validated['purpose'],
-                'notes'               => $validated['notes'] ?? null,
-                'status'              => 'pending',
-            ]);
+                LoanRequestSequence::insertOrIgnore([
+                    'year' => $year,
+                    'month' => $month,
+                    'last_number' => 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                $sequence = LoanRequestSequence::where('year', $year)
+                    ->where('month', $month)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                $nextNumber = $sequence->last_number + 1;
+
+                $requestNumber = sprintf(
+                    'REQ-%03d%02d%d',
+                    $nextNumber,
+                    $month,
+                    $year
+                );
+
+                $sequence->update([
+                    'last_number' => $nextNumber,
+                ]);
+
+                return LoanRequest::create([
+                    'request_number' => $requestNumber,
+                    'asset_id' => $validated['asset_id'],
+                    'borrower_name' => $validated['borrower_name'],
+                    'borrower_position' => $validated['borrower_position'],
+                    'borrower_department' => $validated['borrower_department'] ?? null,
+                    'borrower_phone' => $validated['borrower_phone'] ?? null,
+                    'borrower_signature' => $signaturePath,
+                    'purpose' => $validated['purpose'],
+                    'notes' => $validated['notes'] ?? null,
+                    'status' => 'pending',
+                ]);
+            });
         } catch (\Exception $e) {
-
-            /*
-             * Kalau gagal simpan request,
-             * hapus signature yang sudah tersimpan.
-             */
             if ($signaturePath) {
                 Storage::disk('public')->delete($signaturePath);
             }
 
-            return back()
-                ->withErrors([
-                    'borrower_signature' =>
-                    'Gagal menyimpan tanda tangan.',
-                ])
-                ->withInput();
+            return back()->withErrors([
+                'borrower_signature' => 'Gagal menyimpan request.',
+            ])->withInput();
         }
 
         return redirect()
-            ->route('loan-requests.public.success');
+            ->route('loan-requests.public.success')
+            ->with('request_number', $loanRequest->request_number);
     }
 
     /**
@@ -231,6 +171,92 @@ class LoanRequestController extends Controller
     public function publicSuccess()
     {
         return view('loan-requests.success');
+    }
+
+    /**
+     * Tracking request publik
+     */
+    public function track(Request $request)
+    {
+        $requestNumber = strtoupper(trim($request->query('request_number', '')));
+        $loanRequest = null;
+
+        if ($requestNumber !== '') {
+            $loanRequest = LoanRequest::with([
+                'asset',
+                'loan',
+            ])
+                ->where('request_number', $requestNumber)
+                ->first();
+        }
+
+        return view('loan-requests.track', compact(
+            'loanRequest',
+            'requestNumber'
+        ));
+    }
+
+    /**
+     * Lihat BAST secara publik
+     */
+    public function publicBast(string $requestNumber)
+    {
+        $loanRequest = LoanRequest::with(['asset', 'loan'])
+            ->where('request_number', strtoupper(trim($requestNumber)))
+            ->firstOrFail();
+
+        if ($loanRequest->status !== 'approved' || ! $loanRequest->loan) {
+            abort(404);
+        }
+
+        $loan = $loanRequest->loan;
+        $signatureUrl = null;
+
+        if ($loan->borrower_signature && Storage::disk('public')->exists($loan->borrower_signature)) {
+            $signatureUrl = Storage::disk('public')->url($loan->borrower_signature);
+        }
+
+        return view('loans.pdf', compact('loan', 'signatureUrl'));
+    }
+
+    /**
+     * Download BAST secara publik
+     */
+    public function publicBastDownload(string $requestNumber)
+    {
+        $loanRequest = LoanRequest::with([
+            'asset',
+            'loan',
+        ])
+            ->where('request_number', strtoupper(trim($requestNumber)))
+            ->firstOrFail();
+
+        if ($loanRequest->status !== 'approved' || ! $loanRequest->loan) {
+            abort(404);
+        }
+
+        $loan = $loanRequest->loan;
+        $signaturePath = null;
+
+        if ($loan->borrower_signature && Storage::disk('public')->exists($loan->borrower_signature)) {
+            $signaturePath = Storage::disk('public')->path($loan->borrower_signature);
+        }
+
+        $now = now()->setTimezone('Asia/Jakarta');
+
+        $pdf = Pdf::loadView('loans.pdf', compact(
+            'loan',
+            'now',
+            'signaturePath'
+        ));
+
+        $filename = 'BAST-' . preg_replace(
+            '/[^A-Za-z0-9\-]/',
+            '-',
+            $loan->document_number
+        ) . '.pdf';
+
+        return $pdf->download($filename);
     }
 
     /**
@@ -262,10 +288,8 @@ class LoanRequestController extends Controller
     /**
      * Approve request → buat Loan + nomor BAST
      */
-    public function approve(
-        Request $request,
-        LoanRequest $loanRequest
-    ) {
+    public function approve(Request $request, LoanRequest $loanRequest)
+    {
         if ($loanRequest->status !== 'pending') {
             return back()->with(
                 'error',
@@ -274,23 +298,11 @@ class LoanRequestController extends Controller
         }
 
         $request->validate([
-            'expected_return_at' =>
-            'nullable|date|after:today',
+            'expected_return_at' => 'nullable|date|after:today',
         ]);
 
         try {
-
-            $loan = DB::transaction(function () use (
-                $request,
-                $loanRequest
-            ) {
-
-                /*
-                |--------------------------------------------------------------------------
-                | Lock request
-                |--------------------------------------------------------------------------
-                */
-
+            $loan = DB::transaction(function () use ($request, $loanRequest) {
                 $lockedRequest = LoanRequest::lockForUpdate()
                     ->findOrFail($loanRequest->id);
 
@@ -300,16 +312,8 @@ class LoanRequestController extends Controller
                     );
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | Lock asset
-                |--------------------------------------------------------------------------
-                */
-
                 $asset = Asset::lockForUpdate()
-                    ->findOrFail(
-                        $lockedRequest->asset_id
-                    );
+                    ->findOrFail($lockedRequest->asset_id);
 
                 if ($asset->status !== 'available') {
                     throw new \Exception(
@@ -317,24 +321,9 @@ class LoanRequestController extends Controller
                     );
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | Tentukan tahun dan bulan BAST
-                |--------------------------------------------------------------------------
-                */
-
-                $borrowedAt = now()->setTimezone(
-                    'Asia/Jakarta'
-                );
-
+                $borrowedAt = now()->setTimezone('Asia/Jakarta');
                 $year = (int) $borrowedAt->format('Y');
                 $month = (int) $borrowedAt->format('n');
-
-                /*
-                |--------------------------------------------------------------------------
-                | Ambil / buat sequence bulan ini
-                |--------------------------------------------------------------------------
-                */
 
                 $sequence = LoanDocumentSequence::where(
                     'year',
@@ -348,62 +337,33 @@ class LoanRequestController extends Controller
                     ->first();
 
                 if (! $sequence) {
+                    $sequence = LoanDocumentSequence::create([
+                        'year' => $year,
+                        'month' => $month,
+                        'last_number' => 0,
+                    ]);
 
-                    $sequence =
-                        LoanDocumentSequence::create([
-                            'year'        => $year,
-                            'month'       => $month,
-                            'last_number' => 0,
-                        ]);
-
-                    /*
-                     * Lock row yang baru dibuat
-                     */
                     $sequence->refresh();
                 }
 
-                /*
-                |--------------------------------------------------------------------------
-                | Nomor berikutnya
-                |--------------------------------------------------------------------------
-                */
-
-                $nextNumber =
-                    $sequence->last_number + 1;
-
-                /*
-                |--------------------------------------------------------------------------
-                | Bulan → Romawi
-                |--------------------------------------------------------------------------
-                */
+                $nextNumber = $sequence->last_number + 1;
 
                 $romanMonths = [
-                    1  => 'I',
-                    2  => 'II',
-                    3  => 'III',
-                    4  => 'IV',
-                    5  => 'V',
-                    6  => 'VI',
-                    7  => 'VII',
-                    8  => 'VIII',
-                    9  => 'IX',
+                    1 => 'I',
+                    2 => 'II',
+                    3 => 'III',
+                    4 => 'IV',
+                    5 => 'V',
+                    6 => 'VI',
+                    7 => 'VII',
+                    8 => 'VIII',
+                    9 => 'IX',
                     10 => 'X',
                     11 => 'XI',
                     12 => 'XII',
                 ];
 
-                $romanMonth =
-                    $romanMonths[$month];
-
-                /*
-                |--------------------------------------------------------------------------
-                | Buat nomor BAST
-                |--------------------------------------------------------------------------
-                |
-                | Contoh:
-                | NO. 001/VMB-HCGS/INT/IX/2026
-                |
-                */
+                $romanMonth = $romanMonths[$month];
 
                 $documentNumber = sprintf(
                     'NO. %03d/VMB-HCGS/INT/%s/%d',
@@ -412,86 +372,31 @@ class LoanRequestController extends Controller
                     $year
                 );
 
-                /*
-                |--------------------------------------------------------------------------
-                | Buat Loan
-                |--------------------------------------------------------------------------
-                */
-
                 $loan = Loan::create([
-                    'asset_id' =>
-                    $lockedRequest->asset_id,
-
-                    'borrower_name' =>
-                    $lockedRequest->borrower_name,
-
-                    'borrower_position' =>
-                    $lockedRequest->borrower_position,
-
-                    'borrower_department' =>
-                    $lockedRequest->borrower_department,
-
-                    'borrower_phone' =>
-                    $lockedRequest->borrower_phone,
-
-                    'borrower_signature' =>
-                    $lockedRequest->borrower_signature,
-
-                    'borrowed_at' =>
-                    $borrowedAt,
-
-                    'expected_return_at' =>
-                    $request->expected_return_at ?: null,
-
-                    'condition_before' =>
-                    $asset->condition,
-
-                    'purpose' =>
-                    $lockedRequest->purpose,
-
-                    'notes' =>
-                    $lockedRequest->notes,
-
-                    'approved_by' =>
-                    'Muhamad Ariel Saputra',
-
-                    'document_number' =>
-                    $documentNumber,
+                    'asset_id' => $lockedRequest->asset_id,
+                    'borrower_name' => $lockedRequest->borrower_name,
+                    'borrower_position' => $lockedRequest->borrower_position,
+                    'borrower_department' => $lockedRequest->borrower_department,
+                    'borrower_phone' => $lockedRequest->borrower_phone,
+                    'borrower_signature' => $lockedRequest->borrower_signature,
+                    'borrowed_at' => $borrowedAt,
+                    'expected_return_at' => $request->expected_return_at ?: null,
+                    'condition_before' => $asset->condition,
+                    'purpose' => $lockedRequest->purpose,
+                    'notes' => $lockedRequest->notes,
+                    'approved_by' => 'Muhamad Ariel Saputra',
+                    'document_number' => $documentNumber,
                 ]);
-
-                /*
-                |--------------------------------------------------------------------------
-                | Update sequence
-                |--------------------------------------------------------------------------
-                */
 
                 $sequence->update([
                     'last_number' => $nextNumber,
                 ]);
 
-                /*
-                |--------------------------------------------------------------------------
-                | Update asset
-                |--------------------------------------------------------------------------
-                */
-
                 $asset->update([
-                    'status' =>
-                    Asset::STATUS_IN_USE,
-
-                    'original_location' =>
-                    $asset->location,
-
-                    'location' =>
-                    'Dipinjam oleh: ' .
-                        $lockedRequest->borrower_name,
+                    'status' => Asset::STATUS_IN_USE,
+                    'original_location' => $asset->location,
+                    'location' => 'Dipinjam oleh: ' . $lockedRequest->borrower_name,
                 ]);
-
-                /*
-                |--------------------------------------------------------------------------
-                | Update request
-                |--------------------------------------------------------------------------
-                */
 
                 $lockedRequest->update([
                     'status' => 'approved',
@@ -501,11 +406,9 @@ class LoanRequestController extends Controller
                 return $loan;
             });
         } catch (\Exception $e) {
-
             return back()->with(
                 'error',
-                'Gagal approve: ' .
-                    $e->getMessage()
+                'Gagal approve: ' . $e->getMessage()
             );
         }
 
@@ -520,10 +423,8 @@ class LoanRequestController extends Controller
     /**
      * Reject request
      */
-    public function reject(
-        Request $request,
-        LoanRequest $loanRequest
-    ) {
+    public function reject(Request $request, LoanRequest $loanRequest)
+    {
         if ($loanRequest->status !== 'pending') {
             return back()->with(
                 'error',
@@ -532,19 +433,14 @@ class LoanRequestController extends Controller
         }
 
         $request->validate([
-            'reject_reason' =>
-            'required|string|max:500',
+            'reject_reason' => 'required|string|max:500',
         ], [
-            'reject_reason.required' =>
-            'Alasan penolakan wajib diisi.',
+            'reject_reason.required' => 'Alasan penolakan wajib diisi.',
         ]);
 
         $loanRequest->update([
-            'status' =>
-            'rejected',
-
-            'reject_reason' =>
-            $request->reject_reason,
+            'status' => 'rejected',
+            'reject_reason' => $request->reject_reason,
         ]);
 
         return redirect()

@@ -35,6 +35,9 @@ Route::post('/logout', [AuthController::class, 'logout'])
 Route::get('/request', [LoanRequestController::class, 'publicForm'])->name('loan-requests.public.form');
 Route::post('/request', [LoanRequestController::class, 'publicStore'])->name('loan-requests.public.store');
 Route::get('/request/sukses', [LoanRequestController::class, 'publicSuccess'])->name('loan-requests.public.success');
+Route::get('/track', [LoanRequestController::class, 'track'])->name('loan-requests.track');
+Route::get('/track/{requestNumber}/bast', [LoanRequestController::class, 'publicBast'])->name('loan-requests.public.bast');
+Route::get('/track/{requestNumber}/bast/download', [LoanRequestController::class, 'publicBastDownload'])->name('loan-requests.public.bast.download');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', fn() => redirect()->route('dashboard'));

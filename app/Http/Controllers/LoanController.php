@@ -230,6 +230,9 @@ class LoanController extends Controller
 
         $now = now()->setTimezone('Asia/Jakarta');
 
+        /*
+     * Tanda tangan Penerima / Peminjam
+     */
         $signaturePath = null;
 
         if ($loan->borrower_signature) {
@@ -243,12 +246,27 @@ class LoanController extends Controller
             }
         }
 
+        /*
+     * Tanda tangan Pemberi / IT Support
+     */
+        $itSupportSignature = storage_path(
+            'app/public/signatures/ariel.png'
+        );
+
+        if (! is_file($itSupportSignature)) {
+            $itSupportSignature = null;
+        }
+
+        /*
+     * Generate PDF
+     */
         $pdf = Pdf::loadView(
             'loans.pdf',
             compact(
                 'loan',
                 'now',
-                'signaturePath'
+                'signaturePath',
+                'itSupportSignature'
             )
         );
 
