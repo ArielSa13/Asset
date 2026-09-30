@@ -32,9 +32,9 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 // ── Protected routes ──────────────────────────────────────────────────
 // ── Public routes (tanpa login) ──
-Route::get('/request-peminjaman', [LoanRequestController::class, 'publicForm'])->name('loan-requests.public.form');
-Route::post('/request-peminjaman', [LoanRequestController::class, 'publicStore'])->name('loan-requests.public.store');
-Route::get('/request-peminjaman/sukses', [LoanRequestController::class, 'publicSuccess'])->name('loan-requests.public.success');
+Route::get('/request', [LoanRequestController::class, 'publicForm'])->name('loan-requests.public.form');
+Route::post('/request', [LoanRequestController::class, 'publicStore'])->name('loan-requests.public.store');
+Route::get('/request/sukses', [LoanRequestController::class, 'publicSuccess'])->name('loan-requests.public.success');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', fn() => redirect()->route('dashboard'));

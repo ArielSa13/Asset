@@ -36,6 +36,7 @@ class LoanRequestController extends Controller
             'borrower_position'   => 'required|string|max:255',
             'borrower_department' => 'nullable|string|max:255',
             'borrower_phone'      => 'nullable|string|max:50',
+            'agreement_accepted'  => 'required|accepted',
             'borrower_signature'  => 'required|string',
             'purpose'             => 'required|string|max:500',
             'notes'               => 'nullable|string|max:1000',

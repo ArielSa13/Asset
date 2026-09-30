@@ -543,7 +543,7 @@
         <div class="brand-mark">
             <a href="#" class="logo">
                 <div class="logo-icon"><i class="bi bi-boxes"></i></div>
-                <span class="logo-text">Asset VIVA</span>
+                <span class="logo-text">Asset</span>
             </a>
         </div>
         <div class="hero-content">

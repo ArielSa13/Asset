@@ -212,328 +212,324 @@
 
 <body>
 
-<div class="document">
-
-    
-
-    <div class="title">
-        BERITA ACARA SERAH TERIMA PERALATAN KERJA
-    </div>
-
-    <div class="document-number">
-        <?php echo e($loan->document_number); ?>
-
-    </div>
-
-
-    
-
-    <div class="paragraph">
-
-        Pada Hari
-
-        <strong>
-            <?php echo e($loan->borrowed_at->translatedFormat('l')); ?>
-
-        </strong>
-
-        tanggal
-
-        <strong>
-            <?php echo e($loan->borrowed_at->translatedFormat('d F Y')); ?>
-
-        </strong>
-
-        telah dilakukan serah terima peralatan kerja kepada karyawan
-        <strong>PT. VIVA MEDIA BARU</strong>
-        dengan keterangan berikut:
-
-    </div>
-
-
-    
-
-    <div class="identity">
+    <div class="document">
 
         
-        <div class="identity-row">
 
-            <div class="identity-label">
-                Nama
-            </div>
+        <div class="title">
+            BERITA ACARA SERAH TERIMA PERALATAN KERJA
+        </div>
 
-            <div class="identity-separator">
-                :
-            </div>
-
-            <div class="identity-value">
-                <?php echo e($loan->borrower_name); ?>
-
-            </div>
+        <div class="document-number">
+            <?php echo e($loan->document_number); ?>
 
         </div>
 
 
         
-        <div class="identity-row">
 
-            <div class="identity-label">
-                Jabatan
-            </div>
+        <div class="paragraph">
 
-            <div class="identity-separator">
-                :
-            </div>
+            Pada Hari
 
-            <div class="identity-value">
-                <?php echo e($loan->borrower_position ?: '-'); ?>
+            <strong>
+                <?php echo e($loan->borrowed_at->translatedFormat('l')); ?>
 
-            </div>
+            </strong>
 
-        </div>
+            tanggal
 
+            <strong>
+                <?php echo e($loan->borrowed_at->translatedFormat('d F Y')); ?>
 
-        
-        <div class="identity-row">
+            </strong>
 
-            <div class="identity-label">
-                Divisi
-            </div>
-
-            <div class="identity-separator">
-                :
-            </div>
-
-            <div class="identity-value">
-                <?php echo e($loan->borrower_department ?: '-'); ?>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    
-
-    <div class="equipment-title">
-        Alat kerja berupa:
-    </div>
-
-    <div class="equipment">
-
-        
-        <div class="equipment-row">
-
-            <div class="equipment-label">
-                Nama Barang
-            </div>
-
-            <div class="equipment-separator">
-                :
-            </div>
-
-            <div class="equipment-value">
-
-                <?php echo e($loan->asset->name); ?>
-
-
-                <?php if($loan->asset->brand || $loan->asset->model): ?>
-
-                    -
-                    <?php echo e($loan->asset->brand); ?>
-
-
-                    <?php if($loan->asset->model): ?>
-                        <?php echo e($loan->asset->model); ?>
-
-                    <?php endif; ?>
-
-                <?php endif; ?>
-
-            </div>
+            telah dilakukan serah terima peralatan kerja kepada karyawan
+            <strong>PT. VIVA MEDIA BARU</strong>
+            dengan keterangan berikut:
 
         </div>
 
 
         
-        <div class="equipment-row">
 
-            <div class="equipment-label">
-                Serial Number
-            </div>
-
-            <div class="equipment-separator">
-                :
-            </div>
-
-            <div class="equipment-value">
-                <?php echo e($loan->asset->serial_number ?: '-'); ?>
-
-            </div>
-
-        </div>
-
-
-        
-        <div class="equipment-row">
-
-            <div class="equipment-label">
-                Spesifikasi
-            </div>
-
-            <div class="equipment-separator">
-                :
-            </div>
-
-            <div class="equipment-value">
-                <?php echo e($loan->asset->description ?: '-'); ?>
-
-            </div>
-
-        </div>
-
-
-        
-        <div class="equipment-row">
-
-            <div class="equipment-label">
-                Kelengkapan
-            </div>
-
-            <div class="equipment-separator">
-                :
-            </div>
-
-            <div class="equipment-value">
-                Charger Adapter
-            </div>
-
-        </div>
-
-    </div>
-
-
-    
-
-    <div class="terms-title">
-        Dengan ketentuan sebagai berikut:
-    </div>
-
-    <ol class="terms">
-
-        <li>
-            Perawatan sehari hari menjadi tanggung jawab pengguna.
-        </li>
-
-        <li>
-            Kerusakan selama masa garansi ditanggung oleh vendor
-            yang difasilitasi Bagian GA dan diurus oleh Bagian Procurement.
-        </li>
-
-        <li>
-            Kerusakan dan atau kehilangan sebagian atau seluruh komponen
-            peralatan karena kecelakaan kerja menjadi tanggung jawab perusahaan.
-        </li>
-
-        <li>
-            Kerusakan dan atau kehilangan sebagian atau seluruh komponen
-            peralatan kerja tersebut diatas akibat kelalaian pengguna
-            menjadi tanggung jawab pihak pengguna sepenuhnya.
-        </li>
-
-    </ol>
-
-
-    
-
-    <div class="closing">
-
-        Demikian berita acara serah terima ini dibuat untuk dapat diketahui
-        dan digunakan sebagaimana mestinya.
-
-    </div>
-
-
-    
-
-    <div class="signature-date">
-
-        <?php echo e($loan->borrowed_at->translatedFormat('l')); ?>,
-        <?php echo e($loan->borrowed_at->translatedFormat('d F Y')); ?>
-
-
-    </div>
-
-
-    
-
-    <table class="signature-table">
-
-        <tr>
+        <div class="identity">
 
             
+            <div class="identity-row">
 
-            <td>
-
-                <strong>
-                    Pemberi,
-                </strong>
-
-                <div class="signature-space">
-                    
+                <div class="identity-label">
+                    Nama
                 </div>
 
-                <div class="signature-name">
-                    Muhamad Ariel Saputra
+                <div class="identity-separator">
+                    :
                 </div>
 
-                <div class="signature-position">
-                    IT Support
-                </div>
-
-            </td>
-
-
-            
-
-            <td>
-
-                <strong>
-                    Penerima,
-                </strong>
-
-                <div class="signature-space">
-
-                    <?php if(!empty($signaturePath) && is_file($signaturePath)): ?>
-
-                        <img
-                            src="<?php echo e($signaturePath); ?>"
-                            alt="Tanda Tangan Peminjam"
-                            class="signature-image"
-                        >
-
-                    <?php endif; ?>
-
-                </div>
-
-                <div class="signature-name">
+                <div class="identity-value">
                     <?php echo e($loan->borrower_name); ?>
 
                 </div>
 
-                <div class="signature-position">
-                    <?php echo e($loan->borrower_position ?: 'Karyawan'); ?>
+            </div>
+
+
+            
+            <div class="identity-row">
+
+                <div class="identity-label">
+                    Jabatan
+                </div>
+
+                <div class="identity-separator">
+                    :
+                </div>
+
+                <div class="identity-value">
+                    <?php echo e($loan->borrower_position ?: '-'); ?>
 
                 </div>
 
-            </td>
+            </div>
 
-        </tr>
 
-    </table>
+            
+            <div class="identity-row">
 
-</div>
+                <div class="identity-label">
+                    Divisi
+                </div>
+
+                <div class="identity-separator">
+                    :
+                </div>
+
+                <div class="identity-value">
+                    <?php echo e($loan->borrower_department ?: '-'); ?>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        
+
+        <div class="equipment-title">
+            Alat kerja berupa:
+        </div>
+
+        <div class="equipment">
+
+            
+            <div class="equipment-row">
+
+                <div class="equipment-label">
+                    Nama Barang
+                </div>
+
+                <div class="equipment-separator">
+                    :
+                </div>
+
+                <div class="equipment-value">
+
+                    <?php echo e($loan->asset->name); ?>
+
+
+                    <?php if($loan->asset->brand || $loan->asset->model): ?>
+
+                        -
+                        <?php echo e($loan->asset->brand); ?>
+
+
+                        <?php if($loan->asset->model): ?>
+                            <?php echo e($loan->asset->model); ?>
+
+                        <?php endif; ?>
+
+                    <?php endif; ?>
+
+                </div>
+
+            </div>
+
+
+            
+            <div class="equipment-row">
+
+                <div class="equipment-label">
+                    Serial Number
+                </div>
+
+                <div class="equipment-separator">
+                    :
+                </div>
+
+                <div class="equipment-value">
+                    <?php echo e($loan->asset->serial_number ?: '-'); ?>
+
+                </div>
+
+            </div>
+
+
+            
+            <div class="equipment-row">
+
+                <div class="equipment-label">
+                    Spesifikasi
+                </div>
+
+                <div class="equipment-separator">
+                    :
+                </div>
+
+                <div class="equipment-value">
+                    <?php echo e($loan->asset->description ?: '-'); ?>
+
+                </div>
+
+            </div>
+
+
+            
+            <div class="equipment-row">
+
+                <div class="equipment-label">
+                    Kelengkapan
+                </div>
+
+                <div class="equipment-separator">
+                    :
+                </div>
+
+                <div class="equipment-value">
+                    Charger Adapter
+                </div>
+
+            </div>
+
+        </div>
+
+
+        
+
+        <div class="terms-title">
+            Dengan ketentuan sebagai berikut:
+        </div>
+
+        <ol class="terms">
+
+            <li>
+                Perawatan sehari hari menjadi tanggung jawab pengguna.
+            </li>
+
+            <li>
+                Kerusakan selama masa garansi ditanggung oleh vendor
+                yang difasilitasi Bagian GA dan diurus oleh Bagian Procurement.
+            </li>
+
+            <li>
+                Kerusakan dan atau kehilangan sebagian atau seluruh komponen
+                peralatan karena kecelakaan kerja menjadi tanggung jawab perusahaan.
+            </li>
+
+            <li>
+                Kerusakan dan atau kehilangan sebagian atau seluruh komponen
+                peralatan kerja tersebut diatas akibat kelalaian pengguna
+                menjadi tanggung jawab pihak pengguna sepenuhnya.
+            </li>
+
+        </ol>
+
+
+        
+
+        <div class="closing">
+
+            Demikian berita acara serah terima ini dibuat untuk dapat diketahui
+            dan digunakan sebagaimana mestinya.
+
+        </div>
+
+
+        
+
+        <div class="signature-date">
+
+            <?php echo e($loan->borrowed_at->translatedFormat('l')); ?>,
+            <?php echo e($loan->borrowed_at->translatedFormat('d F Y')); ?>
+
+
+        </div>
+
+
+        
+
+        <table class="signature-table">
+
+            <tr>
+
+                
+
+                <td>
+
+                    <strong>
+                        Pemberi,
+                    </strong>
+
+                    <div class="signature-space">
+                        
+                    </div>
+
+                    <div class="signature-name">
+                        Muhamad Ariel Saputra
+                    </div>
+
+                    <div class="signature-position">
+                        IT Support
+                    </div>
+
+                </td>
+
+
+                
+
+                <td>
+
+                    <strong>
+                        Penerima,
+                    </strong>
+
+                    <div class="signature-space">
+
+                        <?php if(!empty($signaturePath) && is_file($signaturePath)): ?>
+                            <img src="<?php echo e($signaturePath); ?>" alt="Tanda Tangan Peminjam" class="signature-image">
+                        <?php endif; ?>
+
+                    </div>
+
+                    <div class="signature-name">
+                        <?php echo e($loan->borrower_name); ?>
+
+                    </div>
+
+                    <div class="signature-position">
+                        <?php echo e($loan->borrower_position ?: 'Karyawan'); ?>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
 
 </body>
-</html><?php /**PATH /www/wwwroot/asset.adb.web.id/resources/views/loans/pdf.blade.php ENDPATH**/ ?>
+
+</html>
+<?php /**PATH /www/wwwroot/asset.adb.web.id/resources/views/loans/pdf.blade.php ENDPATH**/ ?>

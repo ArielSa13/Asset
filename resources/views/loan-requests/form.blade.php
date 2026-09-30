@@ -1,4 +1,3 @@
-```blade
 <!DOCTYPE html>
 <html lang="id">
 
@@ -19,11 +18,20 @@
            GENERAL
         ========================================================= */
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             min-height: 100vh;
             margin: 0;
             padding: 30px 15px;
-            background: linear-gradient(135deg, #0d6efd, #6f42c1);
+            background:
+                linear-gradient(180deg,
+                    #eaf3ff 0,
+                    #f8fafc 300px);
+            color: #1e293b;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         .request-card {
@@ -31,26 +39,127 @@
             max-width: 850px;
             margin: 0 auto;
             border: 0;
-            border-radius: 20px;
+            border-radius: 18px;
             overflow: hidden;
+            background: #ffffff;
         }
 
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
         .request-header {
-            padding: 30px;
+            padding: 28px 30px;
             background: #ffffff;
-            border-bottom: 1px solid #eeeeee;
+            border-bottom: 1px solid #e9eef5;
         }
+
+        .header-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 14px;
+            background: #0d6efd;
+            color: #ffffff;
+            font-size: 1.35rem;
+            box-shadow: 0 5px 15px rgba(13, 110, 253, .18);
+        }
+
+        .header-badge {
+            display: inline-block;
+            margin-bottom: 4px;
+            color: #0d6efd;
+            font-size: .67rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+        }
+
+        .request-header h3 {
+            color: #172033;
+            font-size: 1.45rem;
+        }
+
+        .request-header p {
+            font-size: .88rem;
+        }
+
+        /* =========================================================
+           BODY
+        ========================================================= */
 
         .request-body {
             padding: 30px;
             background: #ffffff;
         }
 
+        /* =========================================================
+           SECTION TITLE
+        ========================================================= */
+
         .section-title {
-            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
             color: #212529;
-            font-size: 1rem;
+        }
+
+        .section-number {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 9px;
+            background: #eaf3ff;
+            color: #0d6efd;
+            font-size: .72rem;
             font-weight: 700;
+        }
+
+        .section-title-text {
+            font-size: .95rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .section-subtitle {
+            margin-top: 2px;
+            color: #94a3b8;
+            font-size: .76rem;
+            font-weight: 400;
+        }
+
+        /* =========================================================
+           FORM
+        ========================================================= */
+
+        .form-label {
+            margin-bottom: 7px;
+            color: #334155;
+            font-size: .85rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            min-height: 44px;
+            border-color: #dce3eb;
+            border-radius: 9px;
+            font-size: .88rem;
+        }
+
+        textarea.form-control {
+            min-height: 105px;
+            resize: vertical;
+        }
+
+        .form-control:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .08);
         }
 
         /* =========================================================
@@ -59,7 +168,9 @@
 
         .category-filter {
             cursor: pointer;
-            transition: all .2s ease;
+            border-radius: 8px;
+            font-size: .78rem;
+            transition: all .15s ease;
         }
 
         .category-filter:hover {
@@ -72,36 +183,45 @@
             border-color: #0d6efd !important;
         }
 
+        .category-filter .badge {
+            font-size: .62rem;
+            font-weight: 600;
+        }
+
         /* =========================================================
            ASSET LIST
         ========================================================= */
 
         .asset-list {
-            max-height: 400px;
-            padding-right: 4px;
+            max-height: 390px;
+            padding: 2px 4px 2px 0;
             overflow-y: auto;
         }
 
         .asset-option {
             display: block;
-            margin-bottom: 10px;
-            padding: 15px;
-            border: 1px solid #dee2e6;
-            border-radius: 12px;
+            margin-bottom: 8px;
+            padding: 13px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
             background: #ffffff;
             cursor: pointer;
-            transition: all .2s ease;
+            transition: all .15s ease;
+        }
+
+        .asset-option:last-of-type {
+            margin-bottom: 0;
         }
 
         .asset-option:hover {
-            border-color: #0d6efd;
-            background-color: #f8fbff;
+            border-color: #86b7fe;
+            background: #f8fbff;
         }
 
         .asset-option.selected {
             border-color: #0d6efd;
-            background-color: #eaf3ff;
-            box-shadow: 0 0 0 1px rgba(13, 110, 253, .15);
+            background: #f0f7ff;
+            box-shadow: 0 0 0 2px rgba(13, 110, 253, .08);
         }
 
         .asset-option.hidden {
@@ -110,31 +230,22 @@
 
         .asset-radio {
             cursor: pointer;
+            margin-top: 2px;
         }
 
-        /* =========================================================
-           SIGNATURE
-        ========================================================= */
-
-        .signature-wrapper {
-            width: 100%;
-            overflow: hidden;
-            border: 1px solid #ced4da;
-            border-radius: 10px;
-            background-color: #ffffff;
+        .asset-option .asset-name {
+            color: #1e293b;
+            font-size: .9rem;
         }
 
-        #signatureCanvas {
-            display: block;
-            width: 100%;
-            height: 200px;
-            touch-action: none;
-            cursor: crosshair;
+        .asset-option .asset-meta {
+            color: #64748b;
+            font-size: .74rem;
         }
 
-        .signature-info {
-            color: #6c757d;
-            font-size: .85rem;
+        .asset-option .badge {
+            font-size: .65rem;
+            font-weight: 500;
         }
 
         /* =========================================================
@@ -142,25 +253,290 @@
         ========================================================= */
 
         .asset-list::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
 
         .asset-list::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: #f1f5f9;
             border-radius: 10px;
         }
 
         .asset-list::-webkit-scrollbar-thumb {
-            background: #adb5bd;
+            background: #cbd5e1;
             border-radius: 10px;
         }
 
         /* =========================================================
-           EMPTY FILTER RESULT
+           EMPTY FILTER
         ========================================================= */
 
         #noAssetFound {
             display: none;
+        }
+
+        /* =========================================================
+           AGREEMENT
+        ========================================================= */
+
+        .agreement-card {
+            border: 1px solid #dbe4f0;
+            border-radius: 12px;
+            padding: 16px;
+            background: #f8fafc;
+        }
+
+        .agreement-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 13px;
+        }
+
+        .agreement-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: rgba(13, 110, 253, .10);
+            color: #0d6efd;
+            font-size: 1.05rem;
+        }
+
+        .agreement-header h6 {
+            margin: 0 0 3px;
+            color: #1e293b;
+            font-size: .9rem;
+            font-weight: 700;
+        }
+
+        .agreement-header p {
+            margin: 0;
+            color: #64748b;
+            font-size: .76rem;
+        }
+
+        .agreement-view-btn {
+            width: 100%;
+            margin-bottom: 12px;
+            border-radius: 9px;
+            font-size: .83rem;
+        }
+
+        .agreement-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .agreement-check input {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .agreement-check label {
+            color: #475569;
+            font-size: .82rem;
+            line-height: 1.55;
+            cursor: pointer;
+        }
+
+        .agreement-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 11px;
+            padding: 4px 9px;
+            border-radius: 20px;
+            background: #fff3cd;
+            color: #856404;
+            font-size: .7rem;
+            font-weight: 600;
+        }
+
+        .agreement-status.accepted {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        /* =========================================================
+           AGREEMENT DOCUMENT / MODAL
+        ========================================================= */
+
+        .agreement-document {
+            color: #334155;
+            font-size: .9rem;
+            line-height: 1.7;
+        }
+
+        .agreement-document .document-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .agreement-document .document-header h5 {
+            margin-bottom: 5px;
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .agreement-document .document-header p {
+            margin: 0;
+            color: #64748b;
+            font-size: .82rem;
+        }
+
+        .agreement-document .document-intro {
+            margin-bottom: 18px;
+            text-align: justify;
+        }
+
+        .agreement-document ol {
+            padding-left: 23px;
+            margin-bottom: 0;
+        }
+
+        .agreement-document li {
+            margin-bottom: 12px;
+            padding-left: 5px;
+            text-align: justify;
+        }
+
+        .agreement-document .document-closing {
+            margin-top: 20px;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+            text-align: justify;
+        }
+
+        /* =========================================================
+           SIGNATURE
+        ========================================================= */
+
+        .signature-section-locked {
+            position: relative;
+        }
+
+        .signature-lock-message {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 8px;
+            color: #856404;
+            font-size: .78rem;
+        }
+
+        .signature-lock-message:not(.show) {
+            display: none;
+        }
+
+        .signature-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border: 1px dashed #b8c2cc;
+            border-radius: 12px;
+            background-color: #ffffff;
+            transition: all .2s ease;
+        }
+
+        .signature-wrapper.locked {
+            background-color: #f1f3f5;
+            border-color: #dee2e6;
+        }
+
+        .signature-wrapper::after {
+            content: "Tanda tangan di area ini";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #adb5bd;
+            font-size: .82rem;
+            pointer-events: none;
+            opacity: .6;
+            white-space: nowrap;
+        }
+
+        .signature-wrapper.locked::after {
+            content: "Tanda tangan terkunci";
+        }
+
+        .signature-wrapper.has-signature::after {
+            display: none;
+        }
+
+        #signatureCanvas {
+            display: block;
+            width: 100%;
+            height: 190px;
+            touch-action: none;
+            cursor: crosshair;
+        }
+
+        .signature-wrapper.locked #signatureCanvas {
+            cursor: not-allowed;
+        }
+
+        .signature-info {
+            color: #94a3b8;
+            font-size: .74rem;
+        }
+
+        /* =========================================================
+           SUBMIT
+        ========================================================= */
+
+        .submit-area {
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .submit-area .btn {
+            height: 52px;
+            border-radius: 11px;
+            font-weight: 600;
+        }
+
+        .submit-info {
+            margin-top: 9px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: .72rem;
+        }
+
+        /* =========================================================
+           MODAL
+        ========================================================= */
+
+        .modal-content {
+            border: 0;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid #e9eef5;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 14px 22px;
+            border-top: 1px solid #e9eef5;
         }
 
         /* =========================================================
@@ -170,7 +546,11 @@
         @media (max-width: 576px) {
 
             body {
-                padding: 15px 10px;
+                padding: 12px 8px;
+            }
+
+            .request-card {
+                border-radius: 14px;
             }
 
             .request-header,
@@ -178,14 +558,41 @@
                 padding: 20px;
             }
 
-            .request-card {
-                border-radius: 15px;
+            .request-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .request-header p {
+                font-size: .78rem;
+            }
+
+            .header-icon {
+                width: 46px;
+                height: 46px;
+                border-radius: 12px;
+                font-size: 1.15rem;
+            }
+
+            .section-number {
+                width: 30px;
+                height: 30px;
             }
 
             #signatureCanvas {
-                height: 180px;
+                height: 170px;
             }
 
+            .agreement-card {
+                padding: 14px;
+            }
+
+            .modal-body {
+                padding: 18px;
+            }
+
+            .agreement-document {
+                font-size: .84rem;
+            }
         }
     </style>
 </head>
@@ -195,29 +602,32 @@
 
     <div class="container">
 
-        <div class="card shadow-lg request-card">
+        <div class="card shadow-sm request-card">
 
             {{-- =====================================================
-             HEADER
-        ====================================================== --}}
+                 HEADER
+            ====================================================== --}}
 
             <div class="request-header">
 
                 <div class="d-flex align-items-center gap-3">
 
-                    <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
-                        style="width:52px;height:52px;">
-                        <i class="bi bi-laptop fs-4"></i>
+                    <div class="header-icon">
+                        <i class="bi bi-laptop"></i>
                     </div>
 
-                    <div>
+                    <div class="flex-grow-1">
+
+                        <div class="header-badge">
+                            ASSET MANAGEMENT
+                        </div>
 
                         <h3 class="mb-1 fw-bold">
                             Request Peminjaman Asset
                         </h3>
 
                         <p class="text-muted mb-0">
-                            Silakan isi data peminjaman dengan lengkap.
+                            Ajukan peminjaman peralatan kerja dengan mudah.
                         </p>
 
                     </div>
@@ -228,8 +638,8 @@
 
 
             {{-- =====================================================
-             BODY
-        ====================================================== --}}
+                 BODY
+            ====================================================== --}}
 
             <div class="request-body">
 
@@ -282,8 +692,8 @@
 
 
                 {{-- =================================================
-                 FORM
-            ================================================== --}}
+                     FORM
+                ================================================== --}}
 
                 <form id="loanRequestForm" action="{{ route('loan-requests.public.store') }}" method="POST">
 
@@ -291,14 +701,26 @@
 
 
                     {{-- =================================================
-                     DATA PEMINJAM
-                ================================================== --}}
+                         01 DATA PEMINJAM
+                    ================================================== --}}
 
                     <div class="section-title">
 
-                        <i class="bi bi-person me-2"></i>
+                        <span class="section-number">
+                            01
+                        </span>
 
-                        Data Peminjam
+                        <div>
+
+                            <div class="section-title-text">
+                                Data Peminjam
+                            </div>
+
+                            <div class="section-subtitle">
+                                Lengkapi informasi peminjam asset
+                            </div>
+
+                        </div>
 
                     </div>
 
@@ -318,7 +740,7 @@
 
                             <input type="text" name="borrower_name" value="{{ old('borrower_name') }}"
                                 class="form-control @error('borrower_name') is-invalid @enderror"
-                                placeholder="Masukkan nama lengkap" required>
+                                placeholder="Masukkan nama lengkap" autocomplete="name" required>
 
                             @error('borrower_name')
                                 <div class="invalid-feedback">
@@ -386,7 +808,7 @@
 
                             <input type="text" name="borrower_phone" value="{{ old('borrower_phone') }}"
                                 class="form-control @error('borrower_phone') is-invalid @enderror"
-                                placeholder="Contoh: 08123456789">
+                                placeholder="Contoh: 08123456789" autocomplete="tel">
 
                             @error('borrower_phone')
                                 <div class="invalid-feedback">
@@ -400,14 +822,26 @@
 
 
                     {{-- =================================================
-                     PILIH ASSET
-                ================================================== --}}
+                         02 PILIH ASSET
+                    ================================================== --}}
 
                     <div class="section-title">
 
-                        <i class="bi bi-box-seam me-2"></i>
+                        <span class="section-number">
+                            02
+                        </span>
 
-                        Pilih Asset
+                        <div>
+
+                            <div class="section-title-text">
+                                Pilih Asset
+                            </div>
+
+                            <div class="section-subtitle">
+                                Pilih asset yang tersedia untuk dipinjam
+                            </div>
+
+                        </div>
 
                     </div>
 
@@ -422,10 +856,7 @@
 
                         </div>
                     @else
-                        {{-- =================================================
-                         FILTER KATEGORI
-                    ================================================== --}}
-
+                        {{-- FILTER --}}
                         <div class="mb-3">
 
                             <div class="d-flex flex-wrap gap-2">
@@ -466,10 +897,7 @@
                         </div>
 
 
-                        {{-- =================================================
-                         DAFTAR ASSET
-                    ================================================== --}}
-
+                        {{-- ASSET LIST --}}
                         <div class="asset-list mb-2" id="assetList">
 
                             @foreach ($assets as $asset)
@@ -499,16 +927,12 @@
                                         {{-- Detail --}}
                                         <div class="flex-grow-1">
 
-                                            {{-- Nama --}}
-                                            <div class="fw-semibold">
-
+                                            <div class="asset-name fw-semibold">
                                                 {{ $asset->name }}
-
                                             </div>
 
 
-                                            {{-- Informasi --}}
-                                            <div class="small text-muted mt-1">
+                                            <div class="asset-meta mt-1">
 
                                                 @if ($asset->code)
                                                     <span class="me-3">
@@ -545,13 +969,11 @@
                                             </div>
 
 
-                                            {{-- Status --}}
                                             <div class="mt-2">
 
                                                 <span class="badge text-bg-success">
-
+                                                    <i class="bi bi-check-circle me-1"></i>
                                                     Tersedia
-
                                                 </span>
 
                                             </div>
@@ -564,7 +986,7 @@
                             @endforeach
 
 
-                            {{-- Tidak ditemukan --}}
+                            {{-- EMPTY FILTER --}}
                             <div id="noAssetFound" class="alert alert-light border text-center mt-2">
 
                                 <i class="bi bi-search me-2"></i>
@@ -576,12 +998,9 @@
                         </div>
 
 
-                        {{-- Validation --}}
                         @error('asset_id')
                             <div class="text-danger small mb-3">
-
                                 {{ $message }}
-
                             </div>
                         @enderror
 
@@ -589,14 +1008,26 @@
 
 
                     {{-- =================================================
-                     KEPERLUAN
-                ================================================== --}}
+                         03 KEPERLUAN
+                    ================================================== --}}
 
                     <div class="section-title mt-4">
 
-                        <i class="bi bi-clipboard-text me-2"></i>
+                        <span class="section-number">
+                            03
+                        </span>
 
-                        Keperluan Peminjaman
+                        <div>
+
+                            <div class="section-title-text">
+                                Keperluan Peminjaman
+                            </div>
+
+                            <div class="section-subtitle">
+                                Jelaskan tujuan penggunaan asset
+                            </div>
+
+                        </div>
 
                     </div>
 
@@ -611,10 +1042,8 @@
 
                         </label>
 
-
                         <textarea name="purpose" rows="3" class="form-control @error('purpose') is-invalid @enderror"
-                            placeholder="Jelaskan tujuan penggunaan asset..." required>{{ old('purpose') }}</textarea>
-
+                            placeholder="Contoh: Digunakan untuk pekerjaan operasional, meeting, atau kebutuhan project..." required>{{ old('purpose') }}</textarea>
 
                         @error('purpose')
                             <div class="invalid-feedback">
@@ -626,45 +1055,136 @@
 
 
                     {{-- =================================================
-                     CATATAN
-                ================================================== --}}
+                         04 PERSETUJUAN
+                    ================================================== --}}
 
-                    <div class="mb-4">
+                    <div class="section-title">
 
-                        <label class="form-label">
-                            Catatan
-                        </label>
+                        <span class="section-number">
+                            04
+                        </span>
 
+                        <div>
 
-                        <textarea name="notes" rows="3" class="form-control @error('notes') is-invalid @enderror"
-                            placeholder="Catatan tambahan jika diperlukan...">{{ old('notes') }}</textarea>
-
-
-                        @error('notes')
-                            <div class="invalid-feedback">
-                                {{ $message }}
+                            <div class="section-title-text">
+                                Persetujuan
                             </div>
-                        @enderror
+
+                            <div class="section-subtitle">
+                                Baca dan setujui ketentuan sebelum tanda tangan
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="agreement-card mb-4">
+
+                        <div class="agreement-header">
+
+                            <div class="agreement-icon">
+
+                                <i class="bi bi-file-earmark-text"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h6>
+                                    Perjanjian Penggunaan Peralatan Kerja
+                                </h6>
+
+                                <p>
+                                    Ketentuan penggunaan dan tanggung jawab peminjam.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- Buka Perjanjian --}}
+                        <button type="button" class="btn btn-outline-primary agreement-view-btn"
+                            data-bs-toggle="modal" data-bs-target="#agreementModal">
+
+                            <i class="bi bi-eye me-2"></i>
+
+                            Lihat & Baca Perjanjian
+
+                        </button>
+
+
+                        {{-- Checkbox --}}
+                        <div class="agreement-check">
+
+                            <input type="checkbox" id="agreementAccepted" name="agreement_accepted" value="1"
+                                {{ old('agreement_accepted') ? 'checked' : '' }} required>
+
+                            <label for="agreementAccepted">
+
+                                Saya telah membaca, memahami, dan menyetujui
+                                <strong>ketentuan penggunaan asset</strong>
+                                serta bersedia menggunakan dan menjaga asset
+                                sesuai dengan ketentuan yang berlaku.
+
+                            </label>
+
+                        </div>
+
+
+                        {{-- Status --}}
+                        <div id="agreementStatus" class="agreement-status">
+
+                            <i class="bi bi-lock"></i>
+
+                            Belum menyetujui perjanjian
+
+                        </div>
 
                     </div>
 
 
                     {{-- =================================================
-                     TANDA TANGAN
-                ================================================== --}}
+                         05 TANDA TANGAN
+                    ================================================== --}}
 
                     <div class="section-title">
 
-                        <i class="bi bi-pen me-2"></i>
+                        <span class="section-number">
+                            05
+                        </span>
 
-                        Tanda Tangan Peminjam
+                        <div>
+
+                            <div class="section-title-text">
+                                Tanda Tangan Peminjam
+                            </div>
+
+                            <div class="section-subtitle">
+                                Tanda tangan digital sebagai persetujuan peminjaman
+                            </div>
+
+                        </div>
 
                     </div>
 
 
-                    <div class="mb-4">
+                    <div class="mb-4 signature-section-locked">
 
-                        <div class="signature-wrapper">
+                        {{-- LOCK MESSAGE --}}
+                        <div id="signatureLockMessage" class="signature-lock-message show">
+
+                            <i class="bi bi-info-circle"></i>
+
+                            Silakan baca dan setujui perjanjian terlebih dahulu
+                            untuk mengaktifkan tanda tangan.
+
+                        </div>
+
+
+                        {{-- SIGNATURE --}}
+                        <div id="signatureWrapper" class="signature-wrapper locked">
 
                             <canvas id="signatureCanvas"></canvas>
 
@@ -678,13 +1198,15 @@
 
                             <div class="signature-info">
 
-                                Silakan tanda tangan menggunakan mouse,
-                                touchpad, atau layar sentuh.
+                                <i class="bi bi-info-circle me-1"></i>
+
+                                Gunakan mouse, touchpad, atau layar sentuh.
 
                             </div>
 
 
-                            <button type="button" class="btn btn-sm btn-outline-danger" id="clearSignature">
+                            <button type="button" class="btn btn-sm btn-outline-danger" id="clearSignature"
+                                disabled>
 
                                 <i class="bi bi-eraser me-1"></i>
 
@@ -697,9 +1219,7 @@
 
                         @error('borrower_signature')
                             <div class="text-danger small mt-2">
-
                                 {{ $message }}
-
                             </div>
                         @enderror
 
@@ -707,12 +1227,12 @@
 
 
                     {{-- =================================================
-                     SUBMIT
-                ================================================== --}}
+                         SUBMIT
+                    ================================================== --}}
 
-                    <div class="d-grid">
+                    <div class="submit-area">
 
-                        <button type="submit" id="submitButton" class="btn btn-primary btn-lg"
+                        <button type="submit" id="submitButton" class="btn btn-primary btn-lg w-100"
                             {{ $assets->isEmpty() ? 'disabled' : '' }}>
 
                             <i class="bi bi-send me-2"></i>
@@ -720,6 +1240,15 @@
                             Ajukan Peminjaman
 
                         </button>
+
+
+                        <div class="submit-info">
+
+                            <i class="bi bi-shield-check me-1"></i>
+
+                            Data akan diproses oleh IT Support.
+
+                        </div>
 
                     </div>
 
@@ -733,8 +1262,134 @@
 
 
     {{-- =============================================================
-     SIGNATURE PAD
-============================================================= --}}
+         AGREEMENT MODAL
+    ============================================================= --}}
+
+    <div class="modal fade" id="agreementModal" tabindex="-1" aria-labelledby="agreementModalLabel"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+
+            <div class="modal-content">
+
+                {{-- HEADER --}}
+                <div class="modal-header">
+
+                    <div>
+
+                        <h5 class="modal-title fw-bold" id="agreementModalLabel">
+                            PERJANJIAN PENGGUNAAN PERALATAN KERJA
+                        </h5>
+
+                        <small class="text-muted">
+                            PT. VIVA MEDIA BARU
+                        </small>
+
+                    </div>
+
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+
+
+                {{-- BODY --}}
+                <div class="modal-body">
+
+                    <div class="agreement-document">
+
+                        <div class="document-header">
+
+                            <h5>
+                                BERITA ACARA SERAH TERIMA PERALATAN KERJA
+                            </h5>
+
+                            <p>
+                                PT. VIVA MEDIA BARU
+                            </p>
+
+                        </div>
+
+
+                        <div class="document-intro">
+
+                            Dengan mengajukan peminjaman peralatan kerja,
+                            peminjam menyatakan telah memahami ketentuan
+                            penggunaan dan tanggung jawab atas peralatan
+                            kerja yang dipinjam dengan ketentuan sebagai berikut:
+
+                        </div>
+
+
+                        <ol>
+
+                            <li>
+                                Perawatan sehari hari menjadi tanggung jawab pengguna.
+                            </li>
+
+                            <li>
+                                Kerusakan selama masa garansi ditanggung oleh vendor
+                                yang difasilitasi Bagian GA dan diurus oleh Bagian Procurement.
+                            </li>
+
+                            <li>
+                                Kerusakan dan atau kehilangan sebagian atau seluruh komponen
+                                peralatan karena kecelakaan kerja menjadi tanggung jawab perusahaan.
+                            </li>
+
+                            <li>
+                                Kerusakan dan atau kehilangan sebagian atau seluruh komponen
+                                peralatan kerja tersebut diatas akibat kelalaian pengguna
+                                menjadi tanggung jawab pihak pengguna sepenuhnya.
+                            </li>
+
+                        </ol>
+
+
+                        <div class="document-closing">
+
+                            Dengan memberikan tanda tangan digital,
+                            peminjam menyatakan telah membaca, memahami,
+                            dan menyetujui seluruh ketentuan penggunaan
+                            peralatan kerja tersebut di atas.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {{-- FOOTER --}}
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+
+                        <i class="bi bi-check2 me-1"></i>
+
+                        Selesai Membaca
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {{-- =============================================================
+         BOOTSTRAP
+    ============================================================= --}}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    {{-- =============================================================
+         SIGNATURE PAD
+    ============================================================= --}}
 
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@5.0.4/dist/signature_pad.umd.min.js"></script>
 
@@ -742,11 +1397,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            /*
-            |--------------------------------------------------------------------------
-            | ELEMENT
-            |--------------------------------------------------------------------------
-            */
+            /* ========================================================
+               ELEMENT
+            ======================================================== */
 
             const form =
                 document.getElementById('loanRequestForm');
@@ -763,27 +1416,40 @@
             const submitButton =
                 document.getElementById('submitButton');
 
+            const agreementCheckbox =
+                document.getElementById('agreementAccepted');
 
-            /*
-            |--------------------------------------------------------------------------
-            | SIGNATURE PAD
-            |--------------------------------------------------------------------------
-            */
+            const agreementStatus =
+                document.getElementById('agreementStatus');
+
+            const signatureWrapper =
+                document.getElementById('signatureWrapper');
+
+            const signatureLockMessage =
+                document.getElementById('signatureLockMessage');
+
+
+            /* ========================================================
+               SIGNATURE PAD
+            ======================================================== */
 
             const signaturePad =
                 new SignaturePad(canvas, {
+
                     backgroundColor: 'rgb(255, 255, 255)',
+
                     penColor: 'rgb(0, 0, 0)',
+
                     minWidth: 0.8,
+
                     maxWidth: 2.5
+
                 });
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | RESIZE SIGNATURE CANVAS
-            |--------------------------------------------------------------------------
-            */
+            /* ========================================================
+               RESIZE CANVAS
+            ======================================================== */
 
             function resizeCanvas() {
 
@@ -793,12 +1459,13 @@
                         1
                     );
 
+
                 const rect =
                     canvas.getBoundingClientRect();
 
 
                 /*
-                | Simpan data signature
+                | Simpan signature
                 */
 
                 const existingData =
@@ -808,7 +1475,7 @@
 
 
                 /*
-                | Resize canvas
+                | Resize
                 */
 
                 canvas.width =
@@ -827,7 +1494,7 @@
 
 
                 /*
-                | Restore signature
+                | Restore
                 */
 
                 if (existingData) {
@@ -841,17 +1508,161 @@
 
             resizeCanvas();
 
+
             window.addEventListener(
                 'resize',
                 resizeCanvas
             );
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | CLEAR SIGNATURE
-            |--------------------------------------------------------------------------
-            */
+            /* ========================================================
+               SIGNATURE VISUAL STATE
+            ======================================================== */
+
+            function updateSignatureVisual() {
+
+                if (!signaturePad.isEmpty()) {
+
+                    signatureWrapper.classList.add(
+                        'has-signature'
+                    );
+
+                } else {
+
+                    signatureWrapper.classList.remove(
+                        'has-signature'
+                    );
+
+                }
+
+            }
+
+
+            signaturePad.addEventListener(
+                'beginStroke',
+                function() {
+
+                    signatureWrapper.classList.add(
+                        'has-signature'
+                    );
+
+                }
+            );
+
+
+            /* ========================================================
+               AGREEMENT STATE
+            ======================================================== */
+
+            function updateAgreementState() {
+
+                const accepted =
+                    agreementCheckbox.checked;
+
+
+                if (accepted) {
+
+                    /* Agreement */
+                    agreementStatus.classList.add(
+                        'accepted'
+                    );
+
+                    agreementStatus.innerHTML = `
+                        <i class="bi bi-check-circle-fill"></i>
+                        Perjanjian telah disetujui
+                    `;
+
+
+                    /* Signature unlock */
+                    signatureWrapper.classList.remove(
+                        'locked'
+                    );
+
+                    signatureLockMessage.classList.remove(
+                        'show'
+                    );
+
+                    clearButton.disabled = false;
+
+                    canvas.style.pointerEvents =
+                        'auto';
+
+                    canvas.style.opacity =
+                        '1';
+
+
+                    /* Submit */
+                    if (!{{ $assets->isEmpty() ? 'true' : 'false' }}) {
+
+                        submitButton.disabled = false;
+
+                    }
+
+                } else {
+
+                    /* Agreement */
+                    agreementStatus.classList.remove(
+                        'accepted'
+                    );
+
+                    agreementStatus.innerHTML = `
+                        <i class="bi bi-lock"></i>
+                        Belum menyetujui perjanjian
+                    `;
+
+
+                    /* Signature lock */
+                    signatureWrapper.classList.add(
+                        'locked'
+                    );
+
+                    signatureLockMessage.classList.add(
+                        'show'
+                    );
+
+                    clearButton.disabled = true;
+
+                    canvas.style.pointerEvents =
+                        'none';
+
+                    canvas.style.opacity =
+                        '.55';
+
+
+                    /* Hapus signature */
+                    if (!signaturePad.isEmpty()) {
+
+                        signaturePad.clear();
+
+                    }
+
+                    signatureInput.value = '';
+
+                    signatureWrapper.classList.remove(
+                        'has-signature'
+                    );
+
+
+                    /* Disable submit */
+                    submitButton.disabled = true;
+
+                }
+
+            }
+
+
+            updateAgreementState();
+
+
+            agreementCheckbox.addEventListener(
+                'change',
+                updateAgreementState
+            );
+
+
+            /* ========================================================
+               CLEAR SIGNATURE
+            ======================================================== */
 
             clearButton.addEventListener(
                 'click',
@@ -861,22 +1672,40 @@
 
                     signatureInput.value = '';
 
+                    signatureWrapper.classList.remove(
+                        'has-signature'
+                    );
                 }
             );
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | FORM SUBMIT
-            |--------------------------------------------------------------------------
-            */
+            /* ========================================================
+               FORM SUBMIT
+            ======================================================== */
 
             form.addEventListener(
                 'submit',
                 function(event) {
 
                     /*
-                    | Pastikan tanda tangan sudah diisi
+                    | Agreement
+                    */
+
+                    if (!agreementCheckbox.checked) {
+
+                        event.preventDefault();
+
+                        alert(
+                            'Silakan baca dan setujui perjanjian terlebih dahulu.'
+                        );
+
+                        return;
+
+                    }
+
+
+                    /*
+                    | Signature
                     */
 
                     if (signaturePad.isEmpty()) {
@@ -893,41 +1722,43 @@
 
 
                     /*
-                    | Convert signature menjadi PNG Base64
+                    | Convert signature
                     */
 
                     signatureInput.value =
-                        signaturePad.toDataURL('image/png');
+                        signaturePad.toDataURL(
+                            'image/png'
+                        );
 
 
                     /*
-                    | Cegah double submit
+                    | Prevent double submit
                     */
 
                     submitButton.disabled = true;
 
                     submitButton.innerHTML = `
-                <span
-                    class="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                ></span>
+                        <span
+                            class="spinner-border spinner-border-sm me-2"
+                            role="status"
+                            aria-hidden="true"
+                        ></span>
 
-                Mengirim...
-            `;
+                        Mengirim...
+                    `;
 
                 }
             );
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | ASSET SELECTION
-            |--------------------------------------------------------------------------
-            */
+            /* ========================================================
+               ASSET SELECTION
+            ======================================================== */
 
             const assetRadios =
-                document.querySelectorAll('.asset-radio');
+                document.querySelectorAll(
+                    '.asset-radio'
+                );
 
 
             assetRadios.forEach(
@@ -938,11 +1769,13 @@
                         function() {
 
                             /*
-                            | Hapus selected dari semua
+                            | Reset
                             */
 
                             document
-                                .querySelectorAll('.asset-option')
+                                .querySelectorAll(
+                                    '.asset-option'
+                                )
                                 .forEach(
                                     function(option) {
 
@@ -955,7 +1788,7 @@
 
 
                             /*
-                            | Tambahkan selected
+                            | Selected
                             */
 
                             const selectedOption =
@@ -978,7 +1811,6 @@
 
                     /*
                     | Restore selected
-                    | ketika validation gagal
                     */
 
                     if (radio.checked) {
@@ -1003,11 +1835,9 @@
             );
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | CATEGORY FILTER
-            |--------------------------------------------------------------------------
-            */
+            /* ========================================================
+               CATEGORY FILTER
+            ======================================================== */
 
             const filterButtons =
                 document.querySelectorAll(
@@ -1032,16 +1862,12 @@
                         'click',
                         function() {
 
-                            /*
-                            | Kategori yang dipilih
-                            */
-
                             const selectedCategory =
                                 this.dataset.category;
 
 
                             /*
-                            | Update tombol active
+                            | Active button
                             */
 
                             filterButtons.forEach(
@@ -1061,15 +1887,11 @@
 
 
                             /*
-                            | Hitung asset yang tampil
+                            | Filter
                             */
 
                             let visibleCount = 0;
 
-
-                            /*
-                            | Filter asset
-                            */
 
                             assetOptions.forEach(
                                 function(asset) {
@@ -1104,7 +1926,7 @@
 
 
                             /*
-                            | Pesan jika kosong
+                            | Empty state
                             */
 
                             if (visibleCount === 0) {
@@ -1126,11 +1948,9 @@
             );
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | DEFAULT FILTER
-            |--------------------------------------------------------------------------
-            */
+            /* ========================================================
+               DEFAULT FILTER
+            ======================================================== */
 
             const defaultFilter =
                 document.querySelector(
@@ -1150,4 +1970,3 @@
 </body>
 
 </html>
-```
